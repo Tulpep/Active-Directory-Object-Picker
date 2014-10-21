@@ -450,7 +450,7 @@ namespace CubicOrange.Windows.Forms.ActiveDirectory
 
                 Marshal.StructureToPtr(scopeInitInfo[index],
                     (IntPtr)((int)refScopeInitInfo + index * Marshal.SizeOf(typeof(DSOP_SCOPE_INIT_INFO))),
-                    true);
+                    false);
             }
 
 			// Initialize structure with data to initialize an object picker dialog box. 
@@ -532,7 +532,7 @@ namespace CubicOrange.Windows.Forms.ActiveDirectory
 					{
 						// marshal the pointer to the structure
 						DS_SELECTION s = (DS_SELECTION)Marshal.PtrToStructure(current, typeof(DS_SELECTION));
-						Marshal.DestroyStructure(current, typeof(DS_SELECTION));
+						//Marshal.DestroyStructure(current, typeof(DS_SELECTION));
 
 						// increment the position of our pointer by the size of the structure
 						current = (IntPtr)((int)current + Marshal.SizeOf(typeof(DS_SELECTION)));
@@ -549,6 +549,7 @@ namespace CubicOrange.Windows.Forms.ActiveDirectory
 			finally
 			{
 				PInvoke.GlobalUnlock(pDsSL);
+                Marshal.FreeHGlobal(stg.hGlobal);
 			}		
 			return selections;
         }
