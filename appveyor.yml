@@ -16,6 +16,8 @@ assembly_info:
   assembly_file_version: "{version}"
   assembly_informational_version: "{version}"
 
+#Build Relase instead of Debug
+configuration: Release
 
 after_test:
   - ps: .\Nuget\build.ps1
