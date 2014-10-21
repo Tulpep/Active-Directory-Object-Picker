@@ -1,6 +1,6 @@
-﻿$nugetExePath = ".\nuget.exe"
+﻿$root = (split-path -parent $MyInvocation.MyCommand.Definition) + '\..'
+$nugetExePath = ".\nuget.exe"
 Write-Output "Downloading nuget.exe from nuget.org"
-Invoke-WebRequest "https://nuget.org/nuget.exe" -OutFile $nugetExePath
+Invoke-WebRequest "https://nuget.org/nuget.exe" -OutFile $root\Nuget.exe
 Write-Output "Creating Nuget Package"
-& $nugetExePath  "pack specs.nuspec"
-pwd
+& $root\Nuget.exe pack $root\Nuget\specs.nuspec
