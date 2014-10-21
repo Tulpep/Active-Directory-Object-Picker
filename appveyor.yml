@@ -25,4 +25,4 @@ after_test:
 artifacts:
   - path: CubicOrange.Windows.Forms.ActiveDirectory\bin\Release\CubicOrange.Windows.Forms.ActiveDirectory.dll
     name: Dll.dll
-  - path: Nuget\*.nupkg
+  - path: *.nupkg
