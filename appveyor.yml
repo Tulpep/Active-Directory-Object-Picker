@@ -19,3 +19,8 @@ assembly_info:
 
 after_test:
   - ps: .\Nuget\build.ps1
+
+artifacts:
+  - path: CubicOrange.Windows.Forms.ActiveDirectory\bin\Release\CubicOrange.Windows.Forms.ActiveDirectory.dll
+    name: Dll.dll
+  - path: '**\*.nupkg'
