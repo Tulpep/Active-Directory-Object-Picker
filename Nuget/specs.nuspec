@@ -1,0 +1,20 @@
+<?xml version="1.0"?>
+<package xmlns="http://schemas.microsoft.com/packaging/2011/10/nuspec.xsd">
+  <metadata>
+      <id>Tulpep.ActiveDirectoryDialogs</id>
+      <version>0.0.1</version>
+      <title>ActiveDirectoryDialogs</title>
+      <authors>Armand du Plessis; Tulpep</authors>
+      <licenseUrl>https://raw.githubusercontent.com/Tulpep/Active-Directory-Dialogs/master/LICENSE</licenseUrl>
+      <projectUrl>https://github.com/Tulpep/Active-Directory-Dialogs</projectUrl>
+      <requireLicenseAcceptance>false</requireLicenseAcceptance>
+      <description>Active Directory Common Dialogs.</description>
+      <summary>Active Directory Common Dialogs.</summary>
+      <releaseNotes />
+  	  <tags>WPF Active Directory Dialog WinForms Windows Forms</tags>
+    </metadata>
+    <files>
+      <file src="..\CubicOrange.Windows.Forms.ActiveDirectory\bin\Release\CubicOrange.Windows.Forms.ActiveDirectory.dll" target="lib\net35\CubicOrange.Windows.Forms.ActiveDirectory.dll" />
+      <file src="..\CubicOrange.Windows.Forms.ActiveDirectory\bin\Release\Interop.ActiveDs.dll" target="lib\net35\Interop.ActiveDs.dll" />
+    </files>
+</package>
