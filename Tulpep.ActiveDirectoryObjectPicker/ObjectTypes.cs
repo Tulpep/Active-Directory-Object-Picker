@@ -2,7 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Text;
 
-namespace CubicOrange.Windows.Forms.ActiveDirectory
+namespace Tulpep.ActiveDirectoryObjectPicker
 {
     /// <summary>
     /// Indicates the type of objects the DirectoryObjectPickerDialog searches for.

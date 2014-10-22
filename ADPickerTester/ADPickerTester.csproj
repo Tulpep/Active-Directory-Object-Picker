@@ -106,9 +106,9 @@
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\CubicOrange.Windows.Forms.ActiveDirectory\DirectoryObjectPicker.csproj">
-      <Project>{AD25BE24-8A42-44E0-9588-3767F572C338}</Project>
-      <Name>CubicOrange.Windows.Forms.ActiveDirectory</Name>
+    <ProjectReference Include="..\Tulpep.ActiveDirectoryObjectPicker\Tulpep.ActiveDirectoryObjectPicker.csproj">
+      <Project>{ad25be24-8a42-44e0-9588-3767f572c338}</Project>
+      <Name>Tulpep.ActiveDirectoryObjectPicker</Name>
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />

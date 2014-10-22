@@ -1,7 +1,7 @@
 using System;
 using System.Runtime.InteropServices;
 
-namespace CubicOrange.Windows.Forms.ActiveDirectory
+namespace Tulpep.ActiveDirectoryObjectPicker
 {
 
 	/// <summary>

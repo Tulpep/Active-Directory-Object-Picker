@@ -1,6 +1,6 @@
 using System;
 
-namespace CubicOrange.Windows.Forms.ActiveDirectory
+namespace Tulpep.ActiveDirectoryObjectPicker
 {
 	/// <summary>
 	/// Details of a directory object selected in the DirectoryObjectPickerDialog.

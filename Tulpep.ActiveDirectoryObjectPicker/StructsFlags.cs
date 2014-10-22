@@ -1,7 +1,7 @@
 using System;
 using System.Runtime.InteropServices;
 
-namespace CubicOrange.Windows.Forms.ActiveDirectory
+namespace Tulpep.ActiveDirectoryObjectPicker
 {
 	/// <summary>
 	/// This structure is used as a parameter in OLE functions and methods that require data format information.

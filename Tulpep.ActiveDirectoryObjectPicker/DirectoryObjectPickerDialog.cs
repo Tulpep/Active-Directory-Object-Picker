@@ -12,7 +12,7 @@ using System.Collections.Generic;
 using System.Runtime.InteropServices;
 using System.Windows.Forms;
 
-namespace CubicOrange.Windows.Forms.ActiveDirectory
+namespace Tulpep.ActiveDirectoryObjectPicker
 {
     /// <summary>
     /// Represents a common dialog that allows a user to select directory objects.

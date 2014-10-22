@@ -6,12 +6,12 @@ using System.Runtime.CompilerServices;
 // set of attributes. Change these attribute values to modify the information
 // associated with an assembly.
 //
-[assembly: AssemblyTitle("Directory Object Picker common dialog")]
+[assembly: AssemblyTitle("ActiveDirectoryObjectPicker")]
 [assembly: AssemblyDescription("")]
 [assembly: AssemblyConfiguration("")]
 [assembly: AssemblyCompany("")]
-[assembly: AssemblyProduct("Directory Object Picker")]
-[assembly: AssemblyCopyright("© 2004 Armand du Plessis <armand@dotnet.org.za>")]
+[assembly: AssemblyProduct("ActiveDirectoryObjectPicker")]
+[assembly: AssemblyCopyright("Tulpep")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]		
 
