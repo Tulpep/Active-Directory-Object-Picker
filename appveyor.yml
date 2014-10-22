@@ -20,10 +20,10 @@ assembly_info:
 configuration: Release
 
 artifacts:
-  - path: CubicOrange.Windows.Forms.ActiveDirectory\bin\Release\CubicOrange.Windows.Forms.ActiveDirectory.dll
-    name: ActiveDirectory.dll
+  - path: Tulpep.ActiveDirectoryObjectPicker\bin\Release\Tulpep.ActiveDirectoryObjectPicker.dll
+    name: Tulpep.ActiveDirectoryObjectPicker.dll
   - path: '**\*.nupkg'
-    name: ActiveDirectory.nupkg
+    name: Tulpep.ActiveDirectoryObjectPicker.nupkg
 
 after_test:
   - ps: .\Nuget\build.ps1

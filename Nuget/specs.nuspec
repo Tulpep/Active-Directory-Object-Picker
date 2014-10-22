@@ -1,20 +1,20 @@
 <?xml version="1.0"?>
 <package xmlns="http://schemas.microsoft.com/packaging/2011/10/nuspec.xsd">
   <metadata>
-      <id>Tulpep.ActiveDirectoryDialogs</id>
+      <id>Tulpep.ActiveDirectoryObjectPicker</id>
       <version>$version$</version>
-      <title>ActiveDirectoryDialogs</title>
+      <title>Active Directory Object Picker</title>
       <authors>Armand du Plessis; Tulpep</authors>
       <licenseUrl>https://raw.githubusercontent.com/Tulpep/Active-Directory-Dialogs/master/LICENSE</licenseUrl>
       <projectUrl>https://github.com/Tulpep/Active-Directory-Dialogs</projectUrl>
       <requireLicenseAcceptance>false</requireLicenseAcceptance>
-      <description>Active Directory Common Dialogs.</description>
-      <summary>Active Directory Common Dialogs.</summary>
+      <description>Active Directory Object Picker.</description>
+      <summary>Active Directory Object Picker.</summary>
       <releaseNotes />
-  	  <tags>WPF Active Directory Dialog WinForms Windows Forms</tags>
+  	  <tags>WPF Active Directory Dialog WinForms Windows Forms Picker</tags>
     </metadata>
     <files>
-      <file src="..\CubicOrange.Windows.Forms.ActiveDirectory\bin\Release\CubicOrange.Windows.Forms.ActiveDirectory.dll" target="lib\net35\CubicOrange.Windows.Forms.ActiveDirectory.dll" />
-      <file src="..\CubicOrange.Windows.Forms.ActiveDirectory\bin\Release\Interop.ActiveDs.dll" target="lib\net35\Interop.ActiveDs.dll" />
+      <file src="..\Tulpep.ActiveDirectoryObjectPicker\bin\Release\Tulpep.ActiveDirectoryObjectPicker.dll" target="lib\net35\Tulpep.ActiveDirectoryObjectPicker.dll" />
+      <file src="..\Tulpep.ActiveDirectoryObjectPicker\bin\Release\Interop.ActiveDs.dll" target="lib\net35\Interop.ActiveDs.dll" />
     </files>
 </package>
