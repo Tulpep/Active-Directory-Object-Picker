@@ -19,10 +19,11 @@ assembly_info:
 #Build Relase instead of Debug
 configuration: Release
 
-after_test:
-  - ps: .\Nuget\build.ps1
-
 artifacts:
   - path: CubicOrange.Windows.Forms.ActiveDirectory\bin\Release\CubicOrange.Windows.Forms.ActiveDirectory.dll
-    name: Dll.dll
+    name: ActiveDirectory.dll
   - path: '**\*.nupkg'
+    name: ActiveDirectory.nupkg
+
+after_test:
+  - ps: .\Nuget\build.ps1

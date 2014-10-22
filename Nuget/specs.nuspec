@@ -2,7 +2,7 @@
 <package xmlns="http://schemas.microsoft.com/packaging/2011/10/nuspec.xsd">
   <metadata>
       <id>Tulpep.ActiveDirectoryDialogs</id>
-      <version>0.0.1</version>
+      <version>$version$</version>
       <title>ActiveDirectoryDialogs</title>
       <authors>Armand du Plessis; Tulpep</authors>
       <licenseUrl>https://raw.githubusercontent.com/Tulpep/Active-Directory-Dialogs/master/LICENSE</licenseUrl>
