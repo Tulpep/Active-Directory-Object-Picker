@@ -1,7 +1,7 @@
 # http://www.appveyor.com/docs/appveyor-yml
 
 # version format
-version: 0.1.{build}
+version: 1.0.{build}
 
 # Fix line endings in Windows. (runs before repo cloning)
 init:
