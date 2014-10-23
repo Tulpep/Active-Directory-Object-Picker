@@ -2,7 +2,7 @@ Active Directory Object Picker [![Build status](https://ci.appveyor.com/api/proj
 ========================
 ###The standard Active Directory object picker dialog for .NET
 
-![Screenshot](Screenshots/img02.png)
+![Screenshot](Screenshots/ADPickerTester.gif)
 
 
 This project is based on a [Active Directory Common Dialogs .NET](https://adui.codeplex.com/) created in 2004 by Armand du Plessis. It has been updated and make it working with 64 bit Windows Editions.
