@@ -11,13 +11,15 @@ namespace Tulpep.ActiveDirectoryObjectPicker
         private string className;
 		private string name;
 		private string upn;
+        private object[] fetchedAttributes;
 
-        public DirectoryObject(string name, string path, string schemaClass, string upn)
+        public DirectoryObject(string name, string path, string schemaClass, string upn, object[] fetchedAttributes)
         {
             this.name = name;
             this.adsPath = path;
             this.className = schemaClass;
             this.upn = upn;
+            this.fetchedAttributes = fetchedAttributes;
         }
 
         /// <summary>
@@ -74,5 +76,16 @@ namespace Tulpep.ActiveDirectoryObjectPicker
 				return upn;
 			}
 		}
+
+        /// <summary>
+        /// Gets attributes retrieved by the object picker as it makes the selection.
+        /// </summary>
+        public object[] FetchedAttributes
+        {
+            get
+            {
+                return fetchedAttributes;
+            }
+        }
 	}
 }

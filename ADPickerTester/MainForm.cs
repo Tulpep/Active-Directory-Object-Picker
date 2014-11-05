@@ -2,6 +2,7 @@ using System;
 using System.Drawing;
 using System.Collections;
 using System.ComponentModel;
+using System.Security.Principal;
 using System.Windows.Forms;
 using System.Data;
 using Tulpep.ActiveDirectoryObjectPicker;
@@ -27,6 +28,8 @@ namespace ADPickerTester
         private CheckBox chkShowAdvanced;
         private TextBox txtTargetComputer;
         private Label label5;
+        private CheckedListBox chklistAttributes;
+        private Label label6;
 		/// <summary>
 		/// Required designer variable.
 		/// </summary>
@@ -80,6 +83,8 @@ namespace ADPickerTester
             this.chkShowAdvanced = new System.Windows.Forms.CheckBox();
             this.txtTargetComputer = new System.Windows.Forms.TextBox();
             this.label5 = new System.Windows.Forms.Label();
+            this.chklistAttributes = new System.Windows.Forms.CheckedListBox();
+            this.label6 = new System.Windows.Forms.Label();
             this.SuspendLayout();
             // 
             // lblFeedback
@@ -88,7 +93,7 @@ namespace ADPickerTester
             this.lblFeedback.Dock = System.Windows.Forms.DockStyle.Bottom;
             this.lblFeedback.Location = new System.Drawing.Point(0, 213);
             this.lblFeedback.Name = "lblFeedback";
-            this.lblFeedback.Size = new System.Drawing.Size(538, 246);
+            this.lblFeedback.Size = new System.Drawing.Size(666, 246);
             this.lblFeedback.TabIndex = 0;
             // 
             // btnInvoke
@@ -204,14 +209,33 @@ namespace ADPickerTester
             this.label5.TabIndex = 13;
             this.label5.Text = "Target Computer";
             // 
+            // chklistAttributes
+            // 
+            this.chklistAttributes.FormattingEnabled = true;
+            this.chklistAttributes.Location = new System.Drawing.Point(531, 25);
+            this.chklistAttributes.Name = "chklistAttributes";
+            this.chklistAttributes.Size = new System.Drawing.Size(120, 124);
+            this.chklistAttributes.TabIndex = 9;
+            // 
+            // label6
+            // 
+            this.label6.AutoSize = true;
+            this.label6.Location = new System.Drawing.Point(531, 9);
+            this.label6.Name = "label6";
+            this.label6.Size = new System.Drawing.Size(51, 13);
+            this.label6.TabIndex = 10;
+            this.label6.Text = "Attributes";
+            // 
             // MainForm
             // 
             this.AutoScaleBaseSize = new System.Drawing.Size(5, 13);
-            this.ClientSize = new System.Drawing.Size(538, 459);
+            this.ClientSize = new System.Drawing.Size(666, 459);
             this.Controls.Add(this.label5);
             this.Controls.Add(this.txtTargetComputer);
             this.Controls.Add(this.chkShowAdvanced);
+            this.Controls.Add(this.label6);
             this.Controls.Add(this.label4);
+            this.Controls.Add(this.chklistAttributes);
             this.Controls.Add(this.chklistDefaultLocations);
             this.Controls.Add(this.label3);
             this.Controls.Add(this.chklistAllowedLocations);
@@ -272,6 +296,12 @@ namespace ADPickerTester
                 picker.DefaultLocations = defaultLocations;
                 picker.MultiSelect = chkMultiSelect.Checked;
                 picker.TargetComputer = txtTargetComputer.Text;
+                foreach (string attribute in chklistAttributes.CheckedItems)
+                {
+                    string trimmed = attribute.Trim();
+                    if (trimmed.Length > 0)
+                        picker.AttributesToFetch.Add(trimmed);
+                }
                 DialogResult dialogResult = picker.ShowDialog(this);
                 if (dialogResult == DialogResult.OK)
                 {
@@ -306,6 +336,40 @@ namespace ADPickerTester
                         }
                         sb.Append(string.Format("Down-level Name: \t\t {0} ", downLevelName));
                         sb.Append(Environment.NewLine);
+						sb.AppendFormat("Fetched {0} attributes", results[i].FetchedAttributes.Length);
+						sb.Append(Environment.NewLine);
+                        for (int j = 0; j < results[i].FetchedAttributes.Length; j++)
+                        {
+                            sb.AppendFormat("\t{0}. {1}", j, picker.AttributesToFetch[j]);
+							sb.Append(Environment.NewLine);
+
+                            object multivaluedAttribute = results[i].FetchedAttributes[j];
+                            if (!(multivaluedAttribute is IEnumerable) || multivaluedAttribute is byte[] || multivaluedAttribute is string)
+                                multivaluedAttribute = new Object[1] { multivaluedAttribute };
+                            
+                            foreach (object attribute in (IEnumerable) multivaluedAttribute)
+                            {
+                                sb.Append("\t");
+							    if (attribute == null)
+							    {
+								    sb.Append("(not present)");
+							    }
+                                else if (attribute is byte[])
+                                {
+                                    byte[] bytes = (byte[]) attribute;
+                                    sb.Append(BytesToString(bytes));
+                                }
+                                else
+                                {
+                                    sb.AppendFormat("{0}", attribute);
+                                }
+							    sb.Append(Environment.NewLine);
+                            }
+
+                            sb.Append(Environment.NewLine);
+                        }
+
+                        sb.Append(Environment.NewLine);
                         sb.Append(Environment.NewLine);
                     }
                     lblFeedback.Text = sb.ToString();
@@ -320,6 +384,29 @@ namespace ADPickerTester
 				MessageBox.Show(e1.ToString());
 			}
 		}
+
+        private string BytesToString(byte[] bytes)
+        {
+            try
+            {
+                Guid guid = new Guid(bytes);
+                return guid.ToString("D");
+            }
+            catch (Exception)
+            {
+            }
+
+            try
+            {
+                SecurityIdentifier sid = new SecurityIdentifier(bytes, 0);
+                return sid.ToString();
+            }
+            catch (Exception)
+            {
+            }
+
+            return "0x" + BitConverter.ToString(bytes).Replace('-', ' ');
+        }
 
         private void Form1_Load(object sender, EventArgs e)
         {
@@ -359,6 +446,12 @@ namespace ADPickerTester
                     }
                 }
             }
+            chklistAttributes.Items.Clear();
+            //to find more, go to http://msdn.microsoft.com/en-us/library/cc219752.aspx, http://msdn.microsoft.com/en-us/library/cc220155.aspx and http://msdn.microsoft.com/en-us/library/cc220700.aspx
+            chklistAttributes.Items.AddRange(new []
+            {
+                "objectSid",
+            });
         }
 
 	}
