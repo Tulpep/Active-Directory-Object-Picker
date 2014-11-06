@@ -141,6 +141,7 @@
     <Compile Include="StructsFlags.cs">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="UnmanagedArrayOfStrings.cs" />
   </ItemGroup>
   <ItemGroup>
     <COMReference Include="ActiveDs">

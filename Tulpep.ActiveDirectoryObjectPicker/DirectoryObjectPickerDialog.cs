@@ -50,6 +50,7 @@ namespace Tulpep.ActiveDirectoryObjectPicker
         private Locations defaultLocations;
         private ObjectTypes defaultTypes;
         private bool multiSelect;
+        private List<string> attributesToFetch;
         private DirectoryObject[] selectedObjects;
         private bool showAdvancedView;
         private string targetComputer;
@@ -132,6 +133,14 @@ namespace Tulpep.ActiveDirectoryObjectPicker
         }
 
         /// <summary>
+        /// A list of LDAP attribute names that will be retrieved for picked objects
+        /// </summary>
+        public IList<string> AttributesToFetch
+        {
+            get { return attributesToFetch; }
+        }
+
+        /// <summary>
         /// Gets the directory object selected in the dialog, or null if no object was selected.
         /// </summary>
         /// <remarks>
@@ -202,6 +211,7 @@ namespace Tulpep.ActiveDirectoryObjectPicker
             defaultLocations = Locations.None;
             defaultTypes = ObjectTypes.All;
             multiSelect = false;
+            attributesToFetch = new List<string>();
             selectedObjects = null;
             showAdvancedView = false;
             targetComputer = null;
@@ -470,21 +480,38 @@ namespace Tulpep.ActiveDirectoryObjectPicker
             }
 			initInfo.flOptions = flOptions;
 			
-			// We're not retrieving any additional attributes
-            //string[] attributes = new string[] { "sAMaccountName" };
-            //initInfo.cAttributesToFetch = (uint)attributes.Length; 
-            //initInfo.apwzAttributeNames = Marshal.StringToHGlobalUni( attributes[0] );
-            initInfo.cAttributesToFetch = 0;
-            initInfo.apwzAttributeNames = IntPtr.Zero;
-			
-			// Initialize the Object Picker Dialog Box with our options
-			int hresult = ipicker.Initialize (ref initInfo);
-
-            if (hresult != HRESULT.S_OK)
+            // there's a (seeming?) bug on my Windows XP when fetching the objectClass attribute - the pwzClass field is corrupted...
+            // plus, it returns a multivalued array for this attribute. In Windows 2008 R2, however, only last value is returned,
+            // just as in pwzClass. So won't actually be retrieving __objectClass__ - will give pwzClass instead
+            List<string> goingToFetch = new List<string>(attributesToFetch);
+            for (int i = 0; i < goingToFetch.Count; i++)
             {
-                return null;
+                if (goingToFetch[i].Equals("objectClass", StringComparison.OrdinalIgnoreCase))
+                    goingToFetch[i] = "__objectClass__";
             }
-			return ipicker;
+
+            initInfo.cAttributesToFetch = (uint)goingToFetch.Count;
+            UnmanagedArrayOfStrings unmanagedAttributesToFetch = new UnmanagedArrayOfStrings(goingToFetch);
+            initInfo.apwzAttributeNames = unmanagedAttributesToFetch.ArrayPtr;
+            try
+            {
+                // Initialize the Object Picker Dialog Box with our options
+                int hresult = ipicker.Initialize (ref initInfo);
+                if (hresult != HRESULT.S_OK)
+                    throw new COMException("IDsObjectPicker.Initialize failed", hresult);
+                return ipicker;
+            }
+            finally
+            {
+               /*
+                from MSDN (http://msdn.microsoft.com/en-us/library/ms675899(VS.85).aspx):
+                
+                    Initialize can be called multiple times, but only the last call has effect.
+                    Be aware that object picker makes its own copy of InitInfo. 
+                */
+                Marshal.FreeHGlobal(refScopeInitInfo);
+                unmanagedAttributesToFetch.Dispose();
+             }
 		}
 
 		private DirectoryObject[] ProcessSelections(IDataObject dataObj)
@@ -498,7 +525,7 @@ namespace Tulpep.ActiveDirectoryObjectPicker
 			STGMEDIUM stg = new STGMEDIUM();
 			stg.tymed = (uint)TYMED.TYMED_HGLOBAL;
 			stg.hGlobal = IntPtr.Zero;
-			stg.pUnkForRelease = null;
+            stg.pUnkForRelease = IntPtr.Zero;
 
 			// The FORMATETC structure is a generalized Clipboard format.
 			FORMATETC fe = new FORMATETC();
@@ -520,6 +547,7 @@ namespace Tulpep.ActiveDirectoryObjectPicker
 				IntPtr current = pDsSL;
 				// get the # of items selected
 				int cnt = Marshal.ReadInt32(current);
+                int cFetchedAttributes = Marshal.ReadInt32(current, Marshal.SizeOf(typeof(uint)));
 				
 				// if we selected at least 1 object
 				if (cnt > 0)
@@ -541,8 +569,9 @@ namespace Tulpep.ActiveDirectoryObjectPicker
                         string path = s.pwzADsPath;
                         string schemaClassName = s.pwzClass;
                         string upn =  s.pwzUPN;
-                        //string temp = Marshal.PtrToStringUni( s.pvarFetchedAttributes );
-                        selections[i] = new DirectoryObject( name, path, schemaClassName, upn );
+                        object[] fetchedAttributes = GetFetchedAttributes(s.pvarFetchedAttributes, cFetchedAttributes, schemaClassName);
+
+                        selections[i] = new DirectoryObject(name, path, schemaClassName, upn, fetchedAttributes);
 					}
 				}
 			}			
@@ -554,6 +583,29 @@ namespace Tulpep.ActiveDirectoryObjectPicker
 			return selections;
         }
 
+        private Object[] GetFetchedAttributes(IntPtr pvarFetchedAttributes, int cFetchedAttributes, string schemaClassName)
+        {
+            object[] fetchedAttributes;
+            if (cFetchedAttributes > 0)
+                fetchedAttributes = Marshal.GetObjectsForNativeVariants(pvarFetchedAttributes, cFetchedAttributes);
+            else
+                fetchedAttributes = new Object[0];
+
+            for (int i = 0; i < fetchedAttributes.Length; i++)
+            {
+                var largeInteger = fetchedAttributes[i] as IAdsLargeInteger;
+                if (largeInteger != null)
+                {
+                    long l = (largeInteger.HighPart * 0x100000000L) + ((uint) largeInteger.LowPart);
+                    fetchedAttributes[i] = l;
+                }
+
+                if (attributesToFetch[i].Equals("objectClass", StringComparison.OrdinalIgnoreCase)) // see comments in Initialize() function
+                    fetchedAttributes[i] = schemaClassName;
+            }
+
+            return fetchedAttributes;
+        }
         #endregion
     }
 }
