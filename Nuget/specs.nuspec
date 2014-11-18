@@ -12,6 +12,9 @@
       <summary>Active Directory Object Picker.</summary>
       <releaseNotes />
   	  <tags>WPF Active Directory Dialog WinForms Windows Forms Picker</tags>
+      <frameworkAssemblies>
+          <frameworkAssembly assemblyName="System.Windows.Forms" />
+      </frameworkAssemblies>
     </metadata>
     <files>
       <file src="..\Tulpep.ActiveDirectoryObjectPicker\bin\Release\Tulpep.ActiveDirectoryObjectPicker.dll" target="lib\net35\Tulpep.ActiveDirectoryObjectPicker.dll" />
