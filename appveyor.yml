@@ -22,7 +22,7 @@ configuration: Release
 artifacts:
   - path: Tulpep.ActiveDirectoryObjectPicker\bin\Release\Tulpep.ActiveDirectoryObjectPicker.dll
     name: Tulpep.ActiveDirectoryObjectPicker.dll
-  - path: '**\*.nupkg'
+  - path: '**\Tulpep.ActiveDirectoryObjectPicker*.nupkg'
     name: Tulpep.ActiveDirectoryObjectPicker.nupkg
 
 after_test:
@@ -33,6 +33,6 @@ deploy:
   provider: NuGet
   api_key:
     secure: iMjHg2GzZQKygPbCUobQ3V1cUSO+Bxiyk0S6941I5xEe1/bLNdHAn8A7cUbwM9kT
-  artifact: /.*\Tulpep.ActiveDirectoryObjectPicker.nupkg/
+  artifact: /.*\.nupkg/
   on:
     branch: master
