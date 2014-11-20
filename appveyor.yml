@@ -33,4 +33,6 @@ deploy:
   provider: NuGet
   api_key:
     secure: iMjHg2GzZQKygPbCUobQ3V1cUSO+Bxiyk0S6941I5xEe1/bLNdHAn8A7cUbwM9kT
-    artifact: /.*\.nupkg/
+  artifact: /.*\Tulpep.ActiveDirectoryObjectPicker.nupkg/
+  on:
+    branch: master
