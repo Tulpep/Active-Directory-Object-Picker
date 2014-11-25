@@ -44,20 +44,23 @@
             this.label5 = new System.Windows.Forms.Label();
             this.chklistAttributes = new System.Windows.Forms.CheckedListBox();
             this.label6 = new System.Windows.Forms.Label();
+            this.chkSkipDcCheck = new System.Windows.Forms.CheckBox();
+            this.comboPathProvider = new System.Windows.Forms.ComboBox();
+            this.label7 = new System.Windows.Forms.Label();
             this.SuspendLayout();
             // 
             // lblFeedback
             // 
             this.lblFeedback.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D;
             this.lblFeedback.Dock = System.Windows.Forms.DockStyle.Bottom;
-            this.lblFeedback.Location = new System.Drawing.Point(0, 213);
+            this.lblFeedback.Location = new System.Drawing.Point(0, 226);
             this.lblFeedback.Name = "lblFeedback";
-            this.lblFeedback.Size = new System.Drawing.Size(666, 246);
+            this.lblFeedback.Size = new System.Drawing.Size(666, 233);
             this.lblFeedback.TabIndex = 0;
             // 
             // btnInvoke
             // 
-            this.btnInvoke.Location = new System.Drawing.Point(405, 166);
+            this.btnInvoke.Location = new System.Drawing.Point(530, 172);
             this.btnInvoke.Name = "btnInvoke";
             this.btnInvoke.Size = new System.Drawing.Size(121, 39);
             this.btnInvoke.TabIndex = 1;
@@ -84,7 +87,7 @@
             // chkMultiSelect
             // 
             this.chkMultiSelect.AutoSize = true;
-            this.chkMultiSelect.Location = new System.Drawing.Point(279, 184);
+            this.chkMultiSelect.Location = new System.Drawing.Point(279, 199);
             this.chkMultiSelect.Name = "chkMultiSelect";
             this.chkMultiSelect.Size = new System.Drawing.Size(81, 17);
             this.chkMultiSelect.TabIndex = 4;
@@ -145,7 +148,7 @@
             // chkShowAdvanced
             // 
             this.chkShowAdvanced.AutoSize = true;
-            this.chkShowAdvanced.Location = new System.Drawing.Point(279, 166);
+            this.chkShowAdvanced.Location = new System.Drawing.Point(279, 181);
             this.chkShowAdvanced.Name = "chkShowAdvanced";
             this.chkShowAdvanced.Size = new System.Drawing.Size(105, 17);
             this.chkShowAdvanced.TabIndex = 11;
@@ -181,18 +184,50 @@
             this.label6.AutoSize = true;
             this.label6.Location = new System.Drawing.Point(531, 9);
             this.label6.Name = "label6";
-            this.label6.Size = new System.Drawing.Size(51, 13);
+            this.label6.Size = new System.Drawing.Size(93, 13);
             this.label6.TabIndex = 10;
-            this.label6.Text = "Attributes";
+            this.label6.Text = "Attributes to Fetch";
+            // 
+            // chkSkipDcCheck
+            // 
+            this.chkSkipDcCheck.AutoSize = true;
+            this.chkSkipDcCheck.Checked = true;
+            this.chkSkipDcCheck.CheckState = System.Windows.Forms.CheckState.Checked;
+            this.chkSkipDcCheck.Location = new System.Drawing.Point(279, 163);
+            this.chkSkipDcCheck.Name = "chkSkipDcCheck";
+            this.chkSkipDcCheck.Size = new System.Drawing.Size(98, 17);
+            this.chkSkipDcCheck.TabIndex = 4;
+            this.chkSkipDcCheck.Text = "Skip DC check";
+            this.chkSkipDcCheck.UseVisualStyleBackColor = true;
+            // 
+            // comboPathProvider
+            // 
+            this.comboPathProvider.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.comboPathProvider.FormattingEnabled = true;
+            this.comboPathProvider.Location = new System.Drawing.Point(403, 182);
+            this.comboPathProvider.Name = "comboPathProvider";
+            this.comboPathProvider.Size = new System.Drawing.Size(121, 21);
+            this.comboPathProvider.TabIndex = 14;
+            // 
+            // label7
+            // 
+            this.label7.AutoSize = true;
+            this.label7.Location = new System.Drawing.Point(405, 163);
+            this.label7.Name = "label7";
+            this.label7.Size = new System.Drawing.Size(71, 13);
+            this.label7.TabIndex = 10;
+            this.label7.Text = "Path Provider";
             // 
             // MainForm
             // 
             this.AutoScaleBaseSize = new System.Drawing.Size(5, 13);
             this.ClientSize = new System.Drawing.Size(666, 459);
+            this.Controls.Add(this.comboPathProvider);
             this.Controls.Add(this.label5);
             this.Controls.Add(this.txtTargetComputer);
             this.Controls.Add(this.chkShowAdvanced);
             this.Controls.Add(this.label6);
+            this.Controls.Add(this.label7);
             this.Controls.Add(this.label4);
             this.Controls.Add(this.chklistAttributes);
             this.Controls.Add(this.chklistDefaultLocations);
@@ -200,6 +235,7 @@
             this.Controls.Add(this.chklistAllowedLocations);
             this.Controls.Add(this.label2);
             this.Controls.Add(this.chklistAllowedTypes);
+            this.Controls.Add(this.chkSkipDcCheck);
             this.Controls.Add(this.chkMultiSelect);
             this.Controls.Add(this.label1);
             this.Controls.Add(this.chklistDefaultTypes);
@@ -230,5 +266,8 @@
         private System.Windows.Forms.Label label5;
         private System.Windows.Forms.CheckedListBox chklistAttributes;
         private System.Windows.Forms.Label label6;
+        private System.Windows.Forms.CheckBox chkSkipDcCheck;
+        private System.Windows.Forms.ComboBox comboPathProvider;
+        private System.Windows.Forms.Label label7;
     }
 }

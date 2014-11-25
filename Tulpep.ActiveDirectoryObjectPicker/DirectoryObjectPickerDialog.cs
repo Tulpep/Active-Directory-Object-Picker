@@ -11,6 +11,7 @@ using System;
 using System.Collections.Generic;
 using System.Runtime.InteropServices;
 using System.Windows.Forms;
+using System.ComponentModel;
 
 namespace Tulpep.ActiveDirectoryObjectPicker
 {
@@ -49,7 +50,9 @@ namespace Tulpep.ActiveDirectoryObjectPicker
         private ObjectTypes allowedTypes;
         private Locations defaultLocations;
         private ObjectTypes defaultTypes;
+        private ADsPathsProviders providers;
         private bool multiSelect;
+        private bool skipDomainControllerCheck;
         private List<string> attributesToFetch;
         private DirectoryObject[] selectedObjects;
         private bool showAdvancedView;
@@ -79,7 +82,7 @@ namespace Tulpep.ActiveDirectoryObjectPicker
         /// </remarks>
         public DirectoryObjectPickerDialog()
         {
-            Reset();
+            ResetInner();
         }
 
         /// <summary>
@@ -119,6 +122,15 @@ namespace Tulpep.ActiveDirectoryObjectPicker
         }
 
         /// <summary>
+        /// Gets or sets the providers affecting the ADPath returned in objects.
+        /// </summary>
+        public ADsPathsProviders Providers
+        {
+            get { return providers; }
+            set { providers = value; }
+        }
+
+        /// <summary>
         /// Gets or sets whether the user can select multiple objects.
         /// </summary>
         /// <remarks>
@@ -133,7 +145,25 @@ namespace Tulpep.ActiveDirectoryObjectPicker
         }
 
         /// <summary>
-        /// A list of LDAP attribute names that will be retrieved for picked objects
+        /// Gets or sets the whether to check whether the target is a Domain Controller and hide the "Local Computer" scope
+        /// </summary>
+        /// <remarks>
+        /// <para>
+        /// From MSDN:
+        /// 
+        /// If this flag is NOT set, then the DSOP_SCOPE_TYPE_TARGET_COMPUTER flag
+        /// will be ignored if the target computer is a DC.  This flag has no effect
+        /// unless DSOP_SCOPE_TYPE_TARGET_COMPUTER is specified.
+        /// </para>
+        /// </remarks>
+        public bool SkipDomainControllerCheck
+        {
+            get { return skipDomainControllerCheck; }
+            set { skipDomainControllerCheck = value; }
+        }
+
+        /// <summary>
+        /// An list of LDAP attribute names that will be retrieved for picked objects
         /// </summary>
         public IList<string> AttributesToFetch
         {
@@ -153,7 +183,7 @@ namespace Tulpep.ActiveDirectoryObjectPicker
         {
             get
             {
-                if (selectedObjects == null | selectedObjects.Length == 0)
+                if (selectedObjects == null || selectedObjects.Length == 0)
                 {
                     return null;
                 }
@@ -206,16 +236,24 @@ namespace Tulpep.ActiveDirectoryObjectPicker
         /// </summary>
         public override void Reset()
         {
+            ResetInner();
+        }
+
+        private void ResetInner() // can be called from constructor without a "Virtual member call in constructor" warning
+        {
             allowedLocations = Locations.All;
             allowedTypes = ObjectTypes.All;
             defaultLocations = Locations.None;
             defaultTypes = ObjectTypes.All;
+            providers = ADsPathsProviders.Default;
             multiSelect = false;
+            skipDomainControllerCheck = false;
             attributesToFetch = new List<string>();
             selectedObjects = null;
             showAdvancedView = false;
             targetComputer = null;
         }
+
 
         /// <summary>
         /// Displays the Directory Object Picker (Active Directory) common dialog, when called by ShowDialog.
@@ -232,9 +270,23 @@ namespace Tulpep.ActiveDirectoryObjectPicker
                 selectedObjects = null;
                 return false;
             }
+
             int hresult = ipicker.InvokeDialog(hwndOwner, out dataObj);
-            selectedObjects = ProcessSelections(dataObj);
-            return (hresult == HRESULT.S_OK);
+            if (hresult == HRESULT.S_OK)
+            {
+                selectedObjects = ProcessSelections(dataObj);
+                Marshal.ReleaseComObject(dataObj);
+                return true;
+            }
+            else if (hresult == HRESULT.S_FALSE)
+            {
+                selectedObjects = null;
+                Marshal.ReleaseComObject(ipicker);
+                return false;
+            }
+            else
+                throw new COMException("IDsObjectPicker.InvokeDialog failed", hresult);
+            
         }
 
         #region Private implementation
@@ -311,57 +363,6 @@ namespace Tulpep.ActiveDirectoryObjectPicker
             return downlevelFilter;
         }
 
-        // Convert Locations to DSOP_SCOPE_TYPE_FLAGS
-        private static uint GetScope( Locations locations )
-        {
-            uint scope = 0;
-            if ((locations & Locations.LocalComputer) == Locations.LocalComputer)
-            {
-                scope |= DSOP_SCOPE_TYPE_FLAGS.DSOP_SCOPE_TYPE_TARGET_COMPUTER;
-            }
-            if ((locations & Locations.JoinedDomain) == Locations.JoinedDomain)
-            {
-                scope |= DSOP_SCOPE_TYPE_FLAGS.DSOP_SCOPE_TYPE_DOWNLEVEL_JOINED_DOMAIN |
-                        DSOP_SCOPE_TYPE_FLAGS.DSOP_SCOPE_TYPE_UPLEVEL_JOINED_DOMAIN;
-            }
-            if ((locations & Locations.EnterpriseDomain) == Locations.EnterpriseDomain)
-            {
-                scope |= DSOP_SCOPE_TYPE_FLAGS.DSOP_SCOPE_TYPE_ENTERPRISE_DOMAIN;
-            }
-            if ((locations & Locations.GlobalCatalog) == Locations.GlobalCatalog)
-            {
-                scope |= DSOP_SCOPE_TYPE_FLAGS.DSOP_SCOPE_TYPE_GLOBAL_CATALOG;
-            }
-            if ((locations & Locations.ExternalDomain) == Locations.ExternalDomain)
-            {
-                scope |= DSOP_SCOPE_TYPE_FLAGS.DSOP_SCOPE_TYPE_EXTERNAL_DOWNLEVEL_DOMAIN |
-                        DSOP_SCOPE_TYPE_FLAGS.DSOP_SCOPE_TYPE_EXTERNAL_UPLEVEL_DOMAIN;
-            }
-            if ((locations & Locations.Workgroup) == Locations.Workgroup)
-            {
-                scope |= DSOP_SCOPE_TYPE_FLAGS.DSOP_SCOPE_TYPE_WORKGROUP;
-            }
-            if ((locations & Locations.UserEntered) == Locations.UserEntered)
-            {
-                scope |= DSOP_SCOPE_TYPE_FLAGS.DSOP_SCOPE_TYPE_USER_ENTERED_DOWNLEVEL_SCOPE |
-                DSOP_SCOPE_TYPE_FLAGS.DSOP_SCOPE_TYPE_USER_ENTERED_UPLEVEL_SCOPE;
-            }
-            return scope;
-        }
-
-        // Convert scope for allowed locations other than the default
-        private uint GetOtherScope()
-        {
-            Locations otherLocations = allowedLocations & (~defaultLocations);
-            return GetScope(otherLocations);
-        }
-
-        // Convert scope for default locations
-        private uint GetStartingScope()
-        {
-            return GetScope(defaultLocations);
-        }
-
         // Convert ObjectTypes to DSOP_FILTER_FLAGS_FLAGS
         private uint GetUpLevelFilter()
         {
@@ -401,6 +402,67 @@ namespace Tulpep.ActiveDirectoryObjectPicker
             return uplevelFilter;
         }
 
+        // Convert Locations to DSOP_SCOPE_TYPE_FLAGS
+        private static uint GetScope( Locations locations )
+        {
+            uint scope = 0;
+            if ((locations & Locations.LocalComputer) == Locations.LocalComputer)
+            {
+                scope |= DSOP_SCOPE_TYPE_FLAGS.DSOP_SCOPE_TYPE_TARGET_COMPUTER;
+            }
+            if ((locations & Locations.JoinedDomain) == Locations.JoinedDomain)
+            {
+                scope |= DSOP_SCOPE_TYPE_FLAGS.DSOP_SCOPE_TYPE_DOWNLEVEL_JOINED_DOMAIN |
+                        DSOP_SCOPE_TYPE_FLAGS.DSOP_SCOPE_TYPE_UPLEVEL_JOINED_DOMAIN;
+            }
+            if ((locations & Locations.EnterpriseDomain) == Locations.EnterpriseDomain)
+            {
+                scope |= DSOP_SCOPE_TYPE_FLAGS.DSOP_SCOPE_TYPE_ENTERPRISE_DOMAIN;
+            }
+            if ((locations & Locations.GlobalCatalog) == Locations.GlobalCatalog)
+            {
+                scope |= DSOP_SCOPE_TYPE_FLAGS.DSOP_SCOPE_TYPE_GLOBAL_CATALOG;
+            }
+            if ((locations & Locations.ExternalDomain) == Locations.ExternalDomain)
+            {
+                scope |= DSOP_SCOPE_TYPE_FLAGS.DSOP_SCOPE_TYPE_EXTERNAL_DOWNLEVEL_DOMAIN |
+                        DSOP_SCOPE_TYPE_FLAGS.DSOP_SCOPE_TYPE_EXTERNAL_UPLEVEL_DOMAIN;
+            }
+            if ((locations & Locations.Workgroup) == Locations.Workgroup)
+            {
+                scope |= DSOP_SCOPE_TYPE_FLAGS.DSOP_SCOPE_TYPE_WORKGROUP;
+            }
+            if ((locations & Locations.UserEntered) == Locations.UserEntered)
+            {
+                scope |= DSOP_SCOPE_TYPE_FLAGS.DSOP_SCOPE_TYPE_USER_ENTERED_DOWNLEVEL_SCOPE |
+                DSOP_SCOPE_TYPE_FLAGS.DSOP_SCOPE_TYPE_USER_ENTERED_UPLEVEL_SCOPE;
+            }
+            return scope;
+        }
+
+        // Convert ADsPathsProviders to DSOP_SCOPE_INIT_INFO_FLAGS
+        private uint GetProviderFlags()
+        {
+            uint scope = 0;
+            if ((providers & ADsPathsProviders.WinNT) == ADsPathsProviders.WinNT)
+                scope |= DSOP_SCOPE_INIT_INFO_FLAGS.DSOP_SCOPE_FLAG_WANT_PROVIDER_WINNT;
+
+            if ((providers & ADsPathsProviders.LDAP) == ADsPathsProviders.LDAP)
+                scope |= DSOP_SCOPE_INIT_INFO_FLAGS.DSOP_SCOPE_FLAG_WANT_PROVIDER_LDAP;
+
+            if ((providers & ADsPathsProviders.GC) == ADsPathsProviders.GC)
+                scope |= DSOP_SCOPE_INIT_INFO_FLAGS.DSOP_SCOPE_FLAG_WANT_PROVIDER_GC;
+
+            if ((providers & ADsPathsProviders.SIDPath) == ADsPathsProviders.SIDPath)
+                scope |= DSOP_SCOPE_INIT_INFO_FLAGS.DSOP_SCOPE_FLAG_WANT_SID_PATH;
+
+            if ((providers & ADsPathsProviders.DownlevelBuildinPath) == ADsPathsProviders.DownlevelBuildinPath)
+                scope |= DSOP_SCOPE_INIT_INFO_FLAGS.DSOP_SCOPE_FLAG_WANT_DOWNLEVEL_BUILTIN_PATH;
+
+            return scope;
+        }
+
+
 		private IDsObjectPicker Initialize()
 		{
 			DSObjectPicker picker = new DSObjectPicker();
@@ -412,14 +474,16 @@ namespace Tulpep.ActiveDirectoryObjectPicker
             uint defaultFilter = GetDefaultFilter();
             uint upLevelFilter = GetUpLevelFilter();
             uint downLevelFilter = GetDownLevelFilter();
+            uint providerFlags = GetProviderFlags ();
+
             // Internall, use one scope for the default (starting) locations.
-            uint startingScope = GetStartingScope();
+            uint startingScope = GetScope(defaultLocations);
             if (startingScope > 0)
             {
                 DSOP_SCOPE_INIT_INFO startingScopeInfo = new DSOP_SCOPE_INIT_INFO();
                 startingScopeInfo.cbSize = (uint)Marshal.SizeOf(typeof(DSOP_SCOPE_INIT_INFO));
                 startingScopeInfo.flType = startingScope;
-                startingScopeInfo.flScope = DSOP_SCOPE_INIT_INFO_FLAGS.DSOP_SCOPE_FLAG_STARTING_SCOPE | defaultFilter;
+                startingScopeInfo.flScope = DSOP_SCOPE_INIT_INFO_FLAGS.DSOP_SCOPE_FLAG_STARTING_SCOPE | defaultFilter | providerFlags;
                 startingScopeInfo.FilterFlags.Uplevel.flBothModes = upLevelFilter;
                 startingScopeInfo.FilterFlags.flDownlevel = downLevelFilter;
                 startingScopeInfo.pwzADsPath = null;
@@ -429,13 +493,14 @@ namespace Tulpep.ActiveDirectoryObjectPicker
             }
 
             // And another scope for all other locations (AllowedLocation values not in DefaultLocation)
-            uint otherScope = GetOtherScope();
+            Locations otherLocations = allowedLocations & (~defaultLocations);
+            uint otherScope = GetScope(otherLocations);
             if (otherScope > 0)
             {
                 DSOP_SCOPE_INIT_INFO otherScopeInfo = new DSOP_SCOPE_INIT_INFO();
                 otherScopeInfo.cbSize = (uint)Marshal.SizeOf(typeof(DSOP_SCOPE_INIT_INFO));
                 otherScopeInfo.flType = otherScope;
-                otherScopeInfo.flScope = defaultFilter;
+                otherScopeInfo.flScope = defaultFilter | providerFlags;
                 otherScopeInfo.FilterFlags.Uplevel.flBothModes = upLevelFilter;
                 otherScopeInfo.FilterFlags.flDownlevel = downLevelFilter;
                 otherScopeInfo.pwzADsPath = null;
@@ -469,11 +534,15 @@ namespace Tulpep.ActiveDirectoryObjectPicker
 			initInfo.aDsScopeInfos = refScopeInitInfo;  
 			// Flags that determine the object picker options. 
             uint flOptions = 0; 
-            // Only set DSOP_INIT_INFO_FLAGS.DSOP_FLAG_SKIP_TARGET_COMPUTER_DC_CHECK
-            // if we know target is not a DC (which then saves initialization time).
             if (multiSelect)
             {
                 flOptions |= DSOP_INIT_INFO_FLAGS.DSOP_FLAG_MULTISELECT;
+            }
+            // Only set DSOP_INIT_INFO_FLAGS.DSOP_FLAG_SKIP_TARGET_COMPUTER_DC_CHECK
+            // if we know target is not a DC (which then saves initialization time).
+            if (skipDomainControllerCheck)
+            {
+                flOptions |= DSOP_INIT_INFO_FLAGS.DSOP_FLAG_SKIP_TARGET_COMPUTER_DC_CHECK;
             }
 			initInfo.flOptions = flOptions;
 			
@@ -490,12 +559,14 @@ namespace Tulpep.ActiveDirectoryObjectPicker
             initInfo.cAttributesToFetch = (uint)goingToFetch.Count;
             UnmanagedArrayOfStrings unmanagedAttributesToFetch = new UnmanagedArrayOfStrings(goingToFetch);
             initInfo.apwzAttributeNames = unmanagedAttributesToFetch.ArrayPtr;
+			
             try
             {
                 // Initialize the Object Picker Dialog Box with our options
                 int hresult = ipicker.Initialize (ref initInfo);
                 if (hresult != HRESULT.S_OK)
                     throw new COMException("IDsObjectPicker.Initialize failed", hresult);
+
                 return ipicker;
             }
             finally
@@ -534,9 +605,11 @@ namespace Tulpep.ActiveDirectoryObjectPicker
 			fe.lindex = -1; // all of the data
 			fe.tymed = (uint)TYMED.TYMED_HGLOBAL; //The storage medium is a global memory handle (HGLOBAL)
 
-			dataObj.GetData(ref fe, ref stg);
+			int hresult = dataObj.GetData(ref fe, ref stg);
+			if (hresult != HRESULT.S_OK) throw new COMException("IDataObject.GetData failed", hresult);
 	
 			IntPtr pDsSL = PInvoke.GlobalLock(stg.hGlobal);
+			if (pDsSL == IntPtr.Zero) throw new Win32Exception("GlobalLock(stg.hGlobal) failed");
 
 			try
 			{
@@ -557,7 +630,6 @@ namespace Tulpep.ActiveDirectoryObjectPicker
 					{
 						// marshal the pointer to the structure
 						DS_SELECTION s = (DS_SELECTION)Marshal.PtrToStructure(current, typeof(DS_SELECTION));
-						//Marshal.DestroyStructure(current, typeof(DS_SELECTION));
 
 						// increment the position of our pointer by the size of the structure
                         current = current.OffsetWith(Marshal.SizeOf(typeof(DS_SELECTION)));
@@ -603,6 +675,7 @@ namespace Tulpep.ActiveDirectoryObjectPicker
 
             return fetchedAttributes;
         }
+
         #endregion
     }
 }

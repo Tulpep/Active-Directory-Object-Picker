@@ -61,6 +61,9 @@ namespace ADPickerTester
                 picker.DefaultLocations = defaultLocations;
                 picker.MultiSelect = chkMultiSelect.Checked;
                 picker.TargetComputer = txtTargetComputer.Text;
+                picker.SkipDomainControllerCheck = chkSkipDcCheck.Checked;
+				if (comboPathProvider.SelectedItem is ADsPathsProviders)
+					picker.Providers = (ADsPathsProviders) comboPathProvider.SelectedItem;
                 foreach (string attribute in chklistAttributes.CheckedItems)
                 {
                     string trimmed = attribute.Trim();
@@ -212,6 +215,14 @@ namespace ADPickerTester
                     }
                 }
             }
+
+			comboPathProvider.Items.Clear();
+			foreach (ADsPathsProviders provider in Enum.GetValues(typeof(ADsPathsProviders)))
+			{
+				comboPathProvider.Items.Add(provider);
+			}
+			comboPathProvider.SelectedIndex = 0;
+
             chklistAttributes.Items.Clear();
             //to find more, go to http://msdn.microsoft.com/en-us/library/cc219752.aspx, http://msdn.microsoft.com/en-us/library/cc220155.aspx and http://msdn.microsoft.com/en-us/library/cc220700.aspx
             chklistAttributes.Items.AddRange(new []

@@ -24,7 +24,13 @@ namespace Tulpep.ActiveDirectoryObjectPicker
 	{
 		public uint tymed;
 		public IntPtr hGlobal;
-		public Object pUnkForRelease;
+		/* Presumably this is supposed to be an Object but according to a comment by xC0000005 on the
+		 * DSOP_INIT_INFO MSDN page, there is a bug in Windows whereby the returned object doesn't
+		 * support IUnknown, causing a E_NOT_IMPL error from .NET.
+		 * 
+		 * Changing it to IntPtr makes it opaque to .NET and prevents the error
+		 */
+		public IntPtr pUnkForRelease;
 	}
 
 	/// <summary>
@@ -55,7 +61,6 @@ namespace Tulpep.ActiveDirectoryObjectPicker
 		public uint cbSize;
 		public uint flType;
 		public uint flScope;
-		[MarshalAs(UnmanagedType.Struct)]
 		public DSOP_FILTER_FLAGS FilterFlags;
 		[MarshalAs(UnmanagedType.LPWStr)]
 		public string pwzDcName; 
@@ -161,6 +166,8 @@ namespace Tulpep.ActiveDirectoryObjectPicker
 		public const uint DSOP_SCOPE_FLAG_DEFAULT_FILTER_GROUPS =0x00000080;
 		public const uint DSOP_SCOPE_FLAG_DEFAULT_FILTER_COMPUTERS =0x00000100;
 		public const uint DSOP_SCOPE_FLAG_DEFAULT_FILTER_CONTACTS =0x00000200;
+
+		public const uint DSOP_SCOPE_FLAG_DEFAULT_FILTER_SERVICE_ACCOUNTS =0x00000400; // added in Windows SDK 7
 	}
 
 	/// <summary>
@@ -180,6 +187,8 @@ namespace Tulpep.ActiveDirectoryObjectPicker
 		public const uint DSOP_FILTER_DOMAIN_LOCAL_GROUPS_SE = 0x00000200;
 		public const uint DSOP_FILTER_CONTACTS = 0x00000400;
 		public const uint DSOP_FILTER_COMPUTERS = 0x00000800;
+
+		public const uint DSOP_FILTER_SERVICE_ACCOUNTS =0x00001000; // added in Windows SDK 7
 	}
 
 	/// <summary>
@@ -208,6 +217,14 @@ namespace Tulpep.ActiveDirectoryObjectPicker
 		public const uint DSOP_DOWNLEVEL_FILTER_LOCAL_SERVICE = 0x80040000;
 		public const uint DSOP_DOWNLEVEL_FILTER_NETWORK_SERVICE = 0x80080000;
 		public const uint DSOP_DOWNLEVEL_FILTER_REMOTE_LOGON = 0x80100000;
+
+		public const uint DSOP_DOWNLEVEL_FILTER_INTERNET_USER = 0x80200000; // added in Windows SDK 6
+		public const uint DSOP_DOWNLEVEL_FILTER_OWNER_RIGHTS = 0x80400000; // added in Windows SDK 6
+		public const uint DSOP_DOWNLEVEL_FILTER_SERVICES = 0x80800000; // added in Windows SDK 6
+
+		public const uint DSOP_DOWNLEVEL_FILTER_LOCAL_LOGON = 0x81000000; // added in Windows SDK 7
+		public const uint DSOP_DOWNLEVEL_FILTER_THIS_ORG_CERT = 0x82000000; // added in Windows SDK 7
+		public const uint DSOP_DOWNLEVEL_FILTER_IIS_APP_POOL = 0x84000000; // added in Windows SDK 7
 	}
 
 	/// <summary>
@@ -255,4 +272,22 @@ namespace Tulpep.ActiveDirectoryObjectPicker
 		DVASPECT_DOCPRINT = 8
 	}
 
+	/// <summary>
+	/// Directory name types for use with IADsNameTranslate
+	/// </summary>
+	enum ADS_NAME_TYPE_ENUM
+	{
+		ADS_NAME_TYPE_1779 = 1,
+		ADS_NAME_TYPE_CANONICAL = 2,
+		ADS_NAME_TYPE_NT4 = 3,
+		ADS_NAME_TYPE_DISPLAY = 4,
+		ADS_NAME_TYPE_DOMAIN_SIMPLE = 5,
+		ADS_NAME_TYPE_ENTERPRISE_SIMPLE = 6,
+		ADS_NAME_TYPE_GUID = 7,
+		ADS_NAME_TYPE_UNKNOWN = 8,
+		ADS_NAME_TYPE_USER_PRINCIPAL_NAME = 9,
+		ADS_NAME_TYPE_CANONICAL_EX = 10,
+		ADS_NAME_TYPE_SERVICE_PRINCIPAL_NAME = 11,
+		ADS_NAME_TYPE_SID_OR_SID_HISTORY_NAME = 12,
+	}
 }

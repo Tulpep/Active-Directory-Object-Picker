@@ -12,7 +12,7 @@ namespace Tulpep.ActiveDirectoryObjectPicker
 		/// </summary>
 		/// <param name="hMem"></param>
 		/// <returns></returns>
-		[DllImport("Kernel32.dll")]
+		[DllImport("Kernel32.dll", SetLastError=true)]
 		public static extern IntPtr GlobalLock(IntPtr hMem);
 
 		/// <summary>
@@ -20,7 +20,7 @@ namespace Tulpep.ActiveDirectoryObjectPicker
 		/// </summary>
 		/// <param name="hMem"></param>
 		/// <returns></returns>
-		[DllImport("Kernel32.dll")]
+		[DllImport("Kernel32.dll", SetLastError=true)]
 		public static extern bool GlobalUnlock(IntPtr hMem);
 
         /// <summary>
