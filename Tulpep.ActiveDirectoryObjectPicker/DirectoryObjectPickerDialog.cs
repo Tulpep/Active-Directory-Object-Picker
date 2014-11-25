@@ -455,12 +455,9 @@ namespace Tulpep.ActiveDirectoryObjectPicker
 			// Marshal structs to pointers
             for (int index = 0; index < scopeInitInfo.Length; index++)
             {
-                //Marshal.StructureToPtr(scopeInitInfo[0],
-                //    refScopeInitInfo, true);
-
                 Marshal.StructureToPtr(scopeInitInfo[index],
-                    (IntPtr)((int)refScopeInitInfo + index * Marshal.SizeOf(typeof(DSOP_SCOPE_INIT_INFO))),
-                    false);
+                                       refScopeInitInfo.OffsetWith(index * Marshal.SizeOf(typeof(DSOP_SCOPE_INIT_INFO))),
+                                       false);
             }
 
 			// Initialize structure with data to initialize an object picker dialog box. 
@@ -554,7 +551,7 @@ namespace Tulpep.ActiveDirectoryObjectPicker
 				{				
 					selections = new DirectoryObject[cnt];
 					// increment the pointer so we can read the DS_SELECTION structure
-					current = (IntPtr)((int)current + (Marshal.SizeOf(typeof(uint))*2));
+					current = current.OffsetWith(Marshal.SizeOf(typeof(uint))*2);
 					// now loop through the structures
 					for (int i = 0; i < cnt; i++)
 					{
@@ -563,7 +560,7 @@ namespace Tulpep.ActiveDirectoryObjectPicker
 						//Marshal.DestroyStructure(current, typeof(DS_SELECTION));
 
 						// increment the position of our pointer by the size of the structure
-						current = (IntPtr)((int)current + Marshal.SizeOf(typeof(DS_SELECTION)));
+                        current = current.OffsetWith(Marshal.SizeOf(typeof(DS_SELECTION)));
 
                         string name = s.pwzName;
                         string path = s.pwzADsPath;
