@@ -120,6 +120,7 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="ADsPathsProviders.cs" />
     <Compile Include="DirectoryObject.cs">
       <SubType>Code</SubType>
     </Compile>
