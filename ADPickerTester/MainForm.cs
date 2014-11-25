@@ -93,7 +93,7 @@ namespace ADPickerTester
                         string downLevelName = "";
                         try
                         {
-                            if (!string.IsNullOrEmpty(downLevelName))
+                            if (!string.IsNullOrEmpty(results[i].Upn))
                                 downLevelName = NameTranslator.TranslateUpnToDownLevel(results[i].Upn);
                         }
                         catch (Exception ex)
