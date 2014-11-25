@@ -12,7 +12,7 @@ namespace Tulpep.ActiveDirectoryObjectPicker
 		/// </summary>
 		/// <param name="hMem"></param>
 		/// <returns></returns>
-		[DllImport("Kernel32.dll")]
+		[DllImport("Kernel32.dll", SetLastError=true)]
 		public static extern IntPtr GlobalLock(IntPtr hMem);
 
 		/// <summary>
@@ -20,7 +20,14 @@ namespace Tulpep.ActiveDirectoryObjectPicker
 		/// </summary>
 		/// <param name="hMem"></param>
 		/// <returns></returns>
-		[DllImport("Kernel32.dll")]
+		[DllImport("Kernel32.dll", SetLastError=true)]
 		public static extern bool GlobalUnlock(IntPtr hMem);
+
+        /// <summary>
+        /// Frees the specified storage medium.
+        /// </summary>
+        /// <param name="pmedium">Pointer to the storage medium that is to be freed.</param>
+        [DllImport("ole32.dll")]
+        internal static extern void ReleaseStgMedium([In] ref STGMEDIUM pmedium);
 	}
 }

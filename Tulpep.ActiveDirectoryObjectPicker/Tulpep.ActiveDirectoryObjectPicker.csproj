@@ -120,6 +120,7 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="ADsPathsProviders.cs" />
     <Compile Include="DirectoryObject.cs">
       <SubType>Code</SubType>
     </Compile>
@@ -132,6 +133,7 @@
     <Compile Include="DirectoryObjectPickerDialog.cs">
       <SubType>Component</SubType>
     </Compile>
+    <Compile Include="IntPtrExtensions.cs" />
     <Compile Include="NameTranslator.cs" />
     <Compile Include="ObjectTypes.cs" />
     <Compile Include="Locations.cs" />
