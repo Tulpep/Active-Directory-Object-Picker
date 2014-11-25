@@ -577,8 +577,8 @@ namespace Tulpep.ActiveDirectoryObjectPicker
 			}			
 			finally
 			{
-				PInvoke.GlobalUnlock(pDsSL);
-                Marshal.FreeHGlobal(stg.hGlobal);
+                PInvoke.GlobalUnlock(pDsSL);
+                PInvoke.ReleaseStgMedium(ref stg);
 			}		
 			return selections;
         }
