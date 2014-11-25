@@ -90,10 +90,11 @@ namespace ADPickerTester
                         sb.Append(Environment.NewLine);
                         sb.Append(string.Format("Schema Class: \t\t {0} ", results[i].SchemaClassName));
                         sb.Append(Environment.NewLine);
-                        string downLevelName;
+                        string downLevelName = "";
                         try
                         {
-                            downLevelName = NameTranslator.TranslateUpnToDownLevel(results[i].Upn);
+                            if (!string.IsNullOrEmpty(downLevelName))
+                                downLevelName = NameTranslator.TranslateUpnToDownLevel(results[i].Upn);
                         }
                         catch (Exception ex)
                         {
