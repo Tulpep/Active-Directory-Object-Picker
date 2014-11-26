@@ -78,6 +78,8 @@ namespace Tulpep.ActiveDirectoryObjectPicker
 		/// WinNT://Creator owner
 		/// </code>
 		/// </summary>
+		DownlevelBuiltinPath = 0x00000020,
+        [Obsolete("Use DownlevelBuiltinPath instead.")]
 		DownlevelBuildinPath = 0x00000020
 	}
 }

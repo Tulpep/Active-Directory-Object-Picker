@@ -455,7 +455,7 @@ namespace Tulpep.ActiveDirectoryObjectPicker
             if ((providers & ADsPathsProviders.SIDPath) == ADsPathsProviders.SIDPath)
                 scope |= DSOP_SCOPE_INIT_INFO_FLAGS.DSOP_SCOPE_FLAG_WANT_SID_PATH;
 
-            if ((providers & ADsPathsProviders.DownlevelBuildinPath) == ADsPathsProviders.DownlevelBuildinPath)
+            if ((providers & ADsPathsProviders.DownlevelBuiltinPath) == ADsPathsProviders.DownlevelBuiltinPath)
                 scope |= DSOP_SCOPE_INIT_INFO_FLAGS.DSOP_SCOPE_FLAG_WANT_DOWNLEVEL_BUILTIN_PATH;
 
             return scope;
