@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 using System.Security.Principal;
+using System.Text;
 using System.Windows.Forms;
 using Tulpep.ActiveDirectoryObjectPicker;
 
@@ -29,7 +30,7 @@ namespace ADPickerTester
 			Application.Run(new MainForm());
 		}
 
-		private void btnInvoke_Click(object sender, System.EventArgs e)
+		private void btnInvoke_Click(object sender, EventArgs e)
 		{
 			try
 			{
@@ -73,15 +74,14 @@ namespace ADPickerTester
                 DialogResult dialogResult = picker.ShowDialog(this);
                 if (dialogResult == DialogResult.OK)
                 {
-                    DirectoryObject[] results;
-                    results = picker.SelectedObjects;
+                    DirectoryObject[] results = picker.SelectedObjects;
                     if (results == null)
                     {
                         lblFeedback.Text = "Results null.";
                         return;
                     }
 
-                    System.Text.StringBuilder sb = new System.Text.StringBuilder();
+                    StringBuilder sb = new StringBuilder();
 
                     for (int i = 0; i <= results.Length - 1; i++)
                     {
@@ -114,7 +114,7 @@ namespace ADPickerTester
 
                             object multivaluedAttribute = results[i].FetchedAttributes[j];
                             if (!(multivaluedAttribute is IEnumerable) || multivaluedAttribute is byte[] || multivaluedAttribute is string)
-                                multivaluedAttribute = new Object[1] { multivaluedAttribute };
+                                multivaluedAttribute = new[] { multivaluedAttribute };
                             
                             foreach (object attribute in (IEnumerable) multivaluedAttribute)
                             {
@@ -161,6 +161,7 @@ namespace ADPickerTester
                 Guid guid = new Guid(bytes);
                 return guid.ToString("D");
             }
+            // ReSharper disable once EmptyGeneralCatchClause
             catch (Exception)
             {
             }
@@ -170,6 +171,7 @@ namespace ADPickerTester
                 SecurityIdentifier sid = new SecurityIdentifier(bytes, 0);
                 return sid.ToString();
             }
+            // ReSharper disable once EmptyGeneralCatchClause
             catch (Exception)
             {
             }
@@ -225,7 +227,7 @@ namespace ADPickerTester
 
             chklistAttributes.Items.Clear();
             //to find more, go to http://msdn.microsoft.com/en-us/library/cc219752.aspx, http://msdn.microsoft.com/en-us/library/cc220155.aspx and http://msdn.microsoft.com/en-us/library/cc220700.aspx
-            chklistAttributes.Items.AddRange(new []
+            chklistAttributes.Items.AddRange(new object[]
             {
                 "objectSid",
             });

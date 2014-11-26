@@ -1,6 +1,7 @@
 using System;
 using System.Runtime.InteropServices;
 
+// ReSharper disable InconsistentNaming -- those names are from Windows/COM
 namespace Tulpep.ActiveDirectoryObjectPicker
 {
 	/// <summary>
@@ -291,3 +292,4 @@ namespace Tulpep.ActiveDirectoryObjectPicker
 		ADS_NAME_TYPE_SID_OR_SID_HISTORY_NAME = 12,
 	}
 }
+// ReSharper restore InconsistentNaming

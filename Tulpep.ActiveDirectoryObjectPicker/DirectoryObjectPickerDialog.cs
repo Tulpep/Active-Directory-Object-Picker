@@ -263,7 +263,6 @@ namespace Tulpep.ActiveDirectoryObjectPicker
         /// otherwise, false.</returns>
         protected override bool RunDialog(IntPtr hwndOwner)
         {
-            IDataObject dataObj = null;
             IDsObjectPicker ipicker = Initialize();
             if (ipicker == null)
             {
@@ -271,6 +270,7 @@ namespace Tulpep.ActiveDirectoryObjectPicker
                 return false;
             }
 
+            IDataObject dataObj;
             int hresult = ipicker.InvokeDialog(hwndOwner, out dataObj);
             if (hresult == HRESULT.S_OK)
             {
@@ -278,14 +278,13 @@ namespace Tulpep.ActiveDirectoryObjectPicker
                 Marshal.ReleaseComObject(dataObj);
                 return true;
             }
-            else if (hresult == HRESULT.S_FALSE)
+            if (hresult == HRESULT.S_FALSE)
             {
                 selectedObjects = null;
                 Marshal.ReleaseComObject(ipicker);
                 return false;
             }
-            else
-                throw new COMException("IDsObjectPicker.InvokeDialog failed", hresult);
+            throw new COMException("IDsObjectPicker.InvokeDialog failed", hresult);
             
         }
 
@@ -528,7 +527,6 @@ namespace Tulpep.ActiveDirectoryObjectPicker
 			// Initialize structure with data to initialize an object picker dialog box. 
 			DSOP_INIT_INFO initInfo = new DSOP_INIT_INFO (); 						
 			initInfo.cbSize = (uint) Marshal.SizeOf (initInfo); 
-			//initInfo.pwzTargetComputer = null; // local computer
             initInfo.pwzTargetComputer = targetComputer;
             initInfo.cDsScopeInfos = (uint)scopeInitInfo.Length; 
 			initInfo.aDsScopeInfos = refScopeInitInfo;  
@@ -597,11 +595,11 @@ namespace Tulpep.ActiveDirectoryObjectPicker
 
 			// The FORMATETC structure is a generalized Clipboard format.
 			FORMATETC fe = new FORMATETC();
-            fe.cfFormat = System.Windows.Forms.DataFormats.GetFormat(CLIPBOARD_FORMAT.CFSTR_DSOP_DS_SELECTION_LIST).Id; 
+            fe.cfFormat = DataFormats.GetFormat(CLIPBOARD_FORMAT.CFSTR_DSOP_DS_SELECTION_LIST).Id; 
             // The CFSTR_DSOP_DS_SELECTION_LIST clipboard format is provided by the IDataObject obtained 
             // by calling IDsObjectPicker::InvokeDialog
 			fe.ptd = IntPtr.Zero;
-			fe.dwAspect = 1; //DVASPECT_CONTENT    = 1,  
+            fe.dwAspect = 1; //DVASPECT.DVASPECT_CONTENT    = 1,  
 			fe.lindex = -1; // all of the data
 			fe.tymed = (uint)TYMED.TYMED_HGLOBAL; //The storage medium is a global memory handle (HGLOBAL)
 
