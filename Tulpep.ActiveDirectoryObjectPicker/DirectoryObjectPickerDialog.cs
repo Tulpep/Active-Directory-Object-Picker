@@ -72,7 +72,10 @@ namespace Tulpep.ActiveDirectoryObjectPicker
         /// <item><term>AllowedObjectTypes</term><description>All object types.</description></item>
         /// <item><term>DefaultLocations</term><description>None. (Will default to first location.)</description></item>
         /// <item><term>DefaultObjectTypes</term><description>All object types.</description></item>
+        /// <item><term>Providers</term><description><see cref="ADsPathsProviders.Default"/>.</description></item>
         /// <item><term>MultiSelect</term><description>false.</description></item>
+        /// <item><term>SkipDomainControllerCheck</term><description>false.</description></item>
+        /// <item><term>AttributesToFetch</term><description>Empty list.</description></item>
         /// <item><term>SelectedObject</term><description>null.</description></item>
         /// <item><term>SelectedObjects</term><description>Empty array.</description></item>
         /// <item><term>ShowAdvancedView</term><description>false.</description></item>

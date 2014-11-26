@@ -28,7 +28,6 @@
         /// </summary>
         private void InitializeComponent()
         {
-            this.lblFeedback = new System.Windows.Forms.Label();
             this.btnInvoke = new System.Windows.Forms.Button();
             this.chklistDefaultTypes = new System.Windows.Forms.CheckedListBox();
             this.label1 = new System.Windows.Forms.Label();
@@ -47,16 +46,8 @@
             this.chkSkipDcCheck = new System.Windows.Forms.CheckBox();
             this.comboPathProvider = new System.Windows.Forms.ComboBox();
             this.label7 = new System.Windows.Forms.Label();
+            this.txtFeedback = new System.Windows.Forms.TextBox();
             this.SuspendLayout();
-            // 
-            // lblFeedback
-            // 
-            this.lblFeedback.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D;
-            this.lblFeedback.Dock = System.Windows.Forms.DockStyle.Bottom;
-            this.lblFeedback.Location = new System.Drawing.Point(0, 226);
-            this.lblFeedback.Name = "lblFeedback";
-            this.lblFeedback.Size = new System.Drawing.Size(666, 233);
-            this.lblFeedback.TabIndex = 0;
             // 
             // btnInvoke
             // 
@@ -218,10 +209,22 @@
             this.label7.TabIndex = 10;
             this.label7.Text = "Path Provider";
             // 
+            // txtFeedback
+            // 
+            this.txtFeedback.Dock = System.Windows.Forms.DockStyle.Bottom;
+            this.txtFeedback.Location = new System.Drawing.Point(0, 222);
+            this.txtFeedback.Multiline = true;
+            this.txtFeedback.Name = "txtFeedback";
+            this.txtFeedback.ReadOnly = true;
+            this.txtFeedback.ScrollBars = System.Windows.Forms.ScrollBars.Vertical;
+            this.txtFeedback.Size = new System.Drawing.Size(666, 237);
+            this.txtFeedback.TabIndex = 15;
+            // 
             // MainForm
             // 
             this.AutoScaleBaseSize = new System.Drawing.Size(5, 13);
             this.ClientSize = new System.Drawing.Size(666, 459);
+            this.Controls.Add(this.txtFeedback);
             this.Controls.Add(this.comboPathProvider);
             this.Controls.Add(this.label5);
             this.Controls.Add(this.txtTargetComputer);
@@ -240,7 +243,6 @@
             this.Controls.Add(this.label1);
             this.Controls.Add(this.chklistDefaultTypes);
             this.Controls.Add(this.btnInvoke);
-            this.Controls.Add(this.lblFeedback);
             this.Name = "MainForm";
             this.Text = "Directory Object Picker Tester";
             this.Load += new System.EventHandler(this.Form1_Load);
@@ -250,7 +252,6 @@
         }
         #endregion
 
-        private System.Windows.Forms.Label lblFeedback;
         private System.Windows.Forms.Button btnInvoke;
         private System.Windows.Forms.CheckedListBox chklistDefaultTypes;
         private System.Windows.Forms.Label label1;
@@ -269,5 +270,6 @@
         private System.Windows.Forms.CheckBox chkSkipDcCheck;
         private System.Windows.Forms.ComboBox comboPathProvider;
         private System.Windows.Forms.Label label7;
+        private System.Windows.Forms.TextBox txtFeedback;
     }
 }

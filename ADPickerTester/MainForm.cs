@@ -63,6 +63,8 @@ namespace ADPickerTester
                 picker.MultiSelect = chkMultiSelect.Checked;
                 picker.TargetComputer = txtTargetComputer.Text;
                 picker.SkipDomainControllerCheck = chkSkipDcCheck.Checked;
+			    picker.ShowAdvancedView = chkShowAdvanced.Checked;
+
 				if (comboPathProvider.SelectedItem is ADsPathsProviders)
 					picker.Providers = (ADsPathsProviders) comboPathProvider.SelectedItem;
                 foreach (string attribute in chklistAttributes.CheckedItems)
@@ -77,7 +79,7 @@ namespace ADPickerTester
                     DirectoryObject[] results = picker.SelectedObjects;
                     if (results == null)
                     {
-                        lblFeedback.Text = "Results null.";
+                        txtFeedback.Text = "Results null.";
                         return;
                     }
 
@@ -141,11 +143,11 @@ namespace ADPickerTester
                         sb.Append(Environment.NewLine);
                         sb.Append(Environment.NewLine);
                     }
-                    lblFeedback.Text = sb.ToString();
+                    txtFeedback.Text = sb.ToString();
                 }
                 else
                 {
-                    lblFeedback.Text = "Dialog result: " + dialogResult.ToString();
+                    txtFeedback.Text = "Dialog result: " + dialogResult;
                 }
 			}
 			catch(Exception e1)
