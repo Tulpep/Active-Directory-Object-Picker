@@ -18,14 +18,14 @@ namespace Tulpep.ActiveDirectoryObjectPicker
 		/// 
 		/// <code>
 		/// WinNT:
-		/// WinNT://<domain name>
-		/// WinNT://<domain name>/<server>
-		/// WinNT://<domain name>/<path>
-		/// WinNT://<domain name>/<object name>
-		/// WinNT://<domain name>/<object name>,<object class>
-		/// WinNT://<server>
-		/// WinNT://<server>/<object name>
-		/// WinNT://<server>/<object name>,<object class>
+		/// WinNT://&lt;domain name>
+		/// WinNT://&lt;domain name>/&lt;server>
+		/// WinNT://&lt;domain name>/&lt;path>
+		/// WinNT://&lt;domain name>/&lt;object name>
+        /// WinNT://&lt;domain name>/&lt;object name>,&lt;object class>
+		/// WinNT://&lt;server>
+		/// WinNT://&lt;server>/&lt;object name>
+        /// WinNT://&lt;server>/&lt;object name>,&lt;object class>
 		/// </code>
 		/// 
 		/// The domain name can be either a NETBIOS name or a DNS name.
@@ -58,7 +58,7 @@ namespace Tulpep.ActiveDirectoryObjectPicker
 		/// The ADsPaths having an objectSid attribute are converted to the form 
 		/// 
 		/// <code>
-		/// LDAP://<SID=x>
+		/// LDAP://&lt;SID=x>
 		/// </code>
 		/// 
 		/// where x represents the hexadecimal digits of the objectSid attribute value.
@@ -78,6 +78,8 @@ namespace Tulpep.ActiveDirectoryObjectPicker
 		/// WinNT://Creator owner
 		/// </code>
 		/// </summary>
+		DownlevelBuiltinPath = 0x00000020,
+        [Obsolete("Use DownlevelBuiltinPath instead.")]
 		DownlevelBuildinPath = 0x00000020
 	}
 }
