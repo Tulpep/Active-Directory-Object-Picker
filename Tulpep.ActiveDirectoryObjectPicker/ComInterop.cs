@@ -1,6 +1,7 @@
 using System;
 using System.Runtime.InteropServices;
 
+// ReSharper disable InconsistentNaming -- those names are from Windows/COM
 namespace Tulpep.ActiveDirectoryObjectPicker
 {
 
@@ -19,9 +20,9 @@ namespace Tulpep.ActiveDirectoryObjectPicker
 	InterfaceType(ComInterfaceType.InterfaceIsIUnknown)]
     internal interface IDsObjectPicker
 	{
-        [PreserveSig()]
+        [PreserveSig]
         int Initialize(ref DSOP_INIT_INFO pInitInfo);
-        [PreserveSig()]
+        [PreserveSig]
 		int InvokeDialog(IntPtr HWND, out IDataObject lpDataObject);
 	}
 
@@ -32,22 +33,22 @@ namespace Tulpep.ActiveDirectoryObjectPicker
 	Guid("0000010e-0000-0000-C000-000000000046")]
     internal interface IDataObject
 	{
-		[PreserveSig()]
+		[PreserveSig]
 		int GetData(ref FORMATETC pFormatEtc, ref STGMEDIUM b);
 		void GetDataHere(ref FORMATETC pFormatEtc, ref STGMEDIUM b);
-		[PreserveSig()]
+		[PreserveSig]
 		int QueryGetData(IntPtr a);
-		[PreserveSig()]
+		[PreserveSig]
 		int GetCanonicalFormatEtc(IntPtr a, IntPtr b);
-		[PreserveSig()]
+		[PreserveSig]
 		int SetData(IntPtr a, IntPtr b, int c);
-		[PreserveSig()]
+		[PreserveSig]
 		int EnumFormatEtc(uint a, IntPtr b);
-		[PreserveSig()]
+		[PreserveSig]
 		int DAdvise(IntPtr a, uint b, IntPtr c, ref uint d);
-		[PreserveSig()]
+		[PreserveSig]
 		int DUnadvise(uint a);
-		[PreserveSig()]
+		[PreserveSig]
 		int EnumDAdvise(IntPtr a);
 	}
 
@@ -84,3 +85,4 @@ namespace Tulpep.ActiveDirectoryObjectPicker
 		void SetEx(int lnFormatType, object pVar);
 	}
 }
+// ReSharper restore InconsistentNaming

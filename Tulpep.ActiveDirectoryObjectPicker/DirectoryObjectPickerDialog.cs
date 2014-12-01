@@ -72,7 +72,10 @@ namespace Tulpep.ActiveDirectoryObjectPicker
         /// <item><term>AllowedObjectTypes</term><description>All object types.</description></item>
         /// <item><term>DefaultLocations</term><description>None. (Will default to first location.)</description></item>
         /// <item><term>DefaultObjectTypes</term><description>All object types.</description></item>
+        /// <item><term>Providers</term><description><see cref="ADsPathsProviders.Default"/>.</description></item>
         /// <item><term>MultiSelect</term><description>false.</description></item>
+        /// <item><term>SkipDomainControllerCheck</term><description>false.</description></item>
+        /// <item><term>AttributesToFetch</term><description>Empty list.</description></item>
         /// <item><term>SelectedObject</term><description>null.</description></item>
         /// <item><term>SelectedObjects</term><description>Empty array.</description></item>
         /// <item><term>ShowAdvancedView</term><description>false.</description></item>
@@ -263,7 +266,6 @@ namespace Tulpep.ActiveDirectoryObjectPicker
         /// otherwise, false.</returns>
         protected override bool RunDialog(IntPtr hwndOwner)
         {
-            IDataObject dataObj = null;
             IDsObjectPicker ipicker = Initialize();
             if (ipicker == null)
             {
@@ -271,22 +273,27 @@ namespace Tulpep.ActiveDirectoryObjectPicker
                 return false;
             }
 
-            int hresult = ipicker.InvokeDialog(hwndOwner, out dataObj);
-            if (hresult == HRESULT.S_OK)
+            try
             {
-                selectedObjects = ProcessSelections(dataObj);
-                Marshal.ReleaseComObject(dataObj);
-                return true;
-            }
-            else if (hresult == HRESULT.S_FALSE)
-            {
-                selectedObjects = null;
-                Marshal.ReleaseComObject(ipicker);
-                return false;
-            }
-            else
+                IDataObject dataObj = null;
+                int hresult = ipicker.InvokeDialog(hwndOwner, out dataObj);
+                if (hresult == HRESULT.S_OK)
+                {
+                    selectedObjects = ProcessSelections(dataObj);
+                    Marshal.ReleaseComObject(dataObj);
+                    return true;
+                }
+                if (hresult == HRESULT.S_FALSE)
+                {
+                    selectedObjects = null;
+                    return false;
+                }
                 throw new COMException("IDsObjectPicker.InvokeDialog failed", hresult);
-            
+            }
+            finally
+            {
+                Marshal.ReleaseComObject(ipicker);
+            }
         }
 
         #region Private implementation
@@ -456,7 +463,7 @@ namespace Tulpep.ActiveDirectoryObjectPicker
             if ((providers & ADsPathsProviders.SIDPath) == ADsPathsProviders.SIDPath)
                 scope |= DSOP_SCOPE_INIT_INFO_FLAGS.DSOP_SCOPE_FLAG_WANT_SID_PATH;
 
-            if ((providers & ADsPathsProviders.DownlevelBuildinPath) == ADsPathsProviders.DownlevelBuildinPath)
+            if ((providers & ADsPathsProviders.DownlevelBuiltinPath) == ADsPathsProviders.DownlevelBuiltinPath)
                 scope |= DSOP_SCOPE_INIT_INFO_FLAGS.DSOP_SCOPE_FLAG_WANT_DOWNLEVEL_BUILTIN_PATH;
 
             return scope;
@@ -528,7 +535,6 @@ namespace Tulpep.ActiveDirectoryObjectPicker
 			// Initialize structure with data to initialize an object picker dialog box. 
 			DSOP_INIT_INFO initInfo = new DSOP_INIT_INFO (); 						
 			initInfo.cbSize = (uint) Marshal.SizeOf (initInfo); 
-			//initInfo.pwzTargetComputer = null; // local computer
             initInfo.pwzTargetComputer = targetComputer;
             initInfo.cDsScopeInfos = (uint)scopeInitInfo.Length; 
 			initInfo.aDsScopeInfos = refScopeInitInfo;  
@@ -565,8 +571,10 @@ namespace Tulpep.ActiveDirectoryObjectPicker
                 // Initialize the Object Picker Dialog Box with our options
                 int hresult = ipicker.Initialize (ref initInfo);
                 if (hresult != HRESULT.S_OK)
+                {
+                    Marshal.ReleaseComObject(ipicker);
                     throw new COMException("IDsObjectPicker.Initialize failed", hresult);
-
+                }
                 return ipicker;
             }
             finally
@@ -597,11 +605,11 @@ namespace Tulpep.ActiveDirectoryObjectPicker
 
 			// The FORMATETC structure is a generalized Clipboard format.
 			FORMATETC fe = new FORMATETC();
-            fe.cfFormat = System.Windows.Forms.DataFormats.GetFormat(CLIPBOARD_FORMAT.CFSTR_DSOP_DS_SELECTION_LIST).Id; 
+            fe.cfFormat = DataFormats.GetFormat(CLIPBOARD_FORMAT.CFSTR_DSOP_DS_SELECTION_LIST).Id; 
             // The CFSTR_DSOP_DS_SELECTION_LIST clipboard format is provided by the IDataObject obtained 
             // by calling IDsObjectPicker::InvokeDialog
 			fe.ptd = IntPtr.Zero;
-			fe.dwAspect = 1; //DVASPECT_CONTENT    = 1,  
+            fe.dwAspect = 1; //DVASPECT.DVASPECT_CONTENT    = 1,  
 			fe.lindex = -1; // all of the data
 			fe.tymed = (uint)TYMED.TYMED_HGLOBAL; //The storage medium is a global memory handle (HGLOBAL)
 

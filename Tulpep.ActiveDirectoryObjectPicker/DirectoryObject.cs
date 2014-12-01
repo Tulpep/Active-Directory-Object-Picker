@@ -1,4 +1,3 @@
-using System;
 
 namespace Tulpep.ActiveDirectoryObjectPicker
 {
@@ -6,12 +5,12 @@ namespace Tulpep.ActiveDirectoryObjectPicker
 	/// Details of a directory object selected in the DirectoryObjectPickerDialog.
 	/// </summary>
 	public class DirectoryObject
-	{
-        private string adsPath;
-        private string className;
-		private string name;
-		private string upn;
-        private object[] fetchedAttributes;
+    {
+        private readonly string adsPath;
+        private readonly string className;
+        private readonly string name;
+        private readonly string upn;
+        private readonly object[] fetchedAttributes;
 
         public DirectoryObject(string name, string path, string schemaClass, string upn, object[] fetchedAttributes)
         {

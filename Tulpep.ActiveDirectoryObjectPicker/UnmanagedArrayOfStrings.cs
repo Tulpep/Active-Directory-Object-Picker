@@ -12,44 +12,43 @@ namespace Tulpep.ActiveDirectoryObjectPicker
     {
         private readonly int _length;
         private IntPtr _unmanagedArray;
-        private IntPtr[] _unmanagedStrings;
+        private readonly IntPtr[] _unmanagedStrings;
 
         public UnmanagedArrayOfStrings(List<string> strings)
         {
-            int neededSize = 0;
             if (strings != null)
             {
-                this._length = strings.Count;
-                this._unmanagedStrings = new IntPtr[this._length];
-                neededSize = this._length*IntPtr.Size;
-                this._unmanagedArray = Marshal.AllocCoTaskMem(neededSize);
-                for (int cx = this._length - 1; cx >= 0; cx--)
+                _length = strings.Count;
+                _unmanagedStrings = new IntPtr[_length];
+                int neededSize = _length*IntPtr.Size;
+                _unmanagedArray = Marshal.AllocCoTaskMem(neededSize);
+                for (int cx = _length - 1; cx >= 0; cx--)
                 {
-                    this._unmanagedStrings[cx] = Marshal.StringToCoTaskMemUni(strings[cx]);
-                    Marshal.WriteIntPtr(this._unmanagedArray, cx*IntPtr.Size, this._unmanagedStrings[cx]);
+                    _unmanagedStrings[cx] = Marshal.StringToCoTaskMemUni(strings[cx]);
+                    Marshal.WriteIntPtr(_unmanagedArray, cx*IntPtr.Size, _unmanagedStrings[cx]);
                 }
             }
         }
 
         public IntPtr ArrayPtr
         {
-            get { return this._unmanagedArray; }
+            get { return _unmanagedArray; }
         }
 
         public void Dispose()
         {
             if (_unmanagedArray != IntPtr.Zero)
             {
-                Marshal.FreeCoTaskMem(this._unmanagedArray);
+                Marshal.FreeCoTaskMem(_unmanagedArray);
                 _unmanagedArray = IntPtr.Zero;
             }
 
-            for (int cx = 0; cx < this._length; cx++)
+            for (int cx = 0; cx < _length; cx++)
             {
-                if (this._unmanagedStrings[cx] != IntPtr.Zero)
+                if (_unmanagedStrings[cx] != IntPtr.Zero)
                 {
-                    Marshal.FreeCoTaskMem(this._unmanagedStrings[cx]);
-                    this._unmanagedStrings[cx] = IntPtr.Zero;
+                    Marshal.FreeCoTaskMem(_unmanagedStrings[cx]);
+                    _unmanagedStrings[cx] = IntPtr.Zero;
                 }
             }
         }
