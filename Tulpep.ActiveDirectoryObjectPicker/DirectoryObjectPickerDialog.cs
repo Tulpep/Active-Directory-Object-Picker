@@ -263,7 +263,6 @@ namespace Tulpep.ActiveDirectoryObjectPicker
         /// otherwise, false.</returns>
         protected override bool RunDialog(IntPtr hwndOwner)
         {
-            IDataObject dataObj = null;
             IDsObjectPicker ipicker = Initialize();
             if (ipicker == null)
             {
@@ -271,22 +270,28 @@ namespace Tulpep.ActiveDirectoryObjectPicker
                 return false;
             }
 
-            int hresult = ipicker.InvokeDialog(hwndOwner, out dataObj);
-            if (hresult == HRESULT.S_OK)
+            try
             {
-                selectedObjects = ProcessSelections(dataObj);
-                Marshal.ReleaseComObject(dataObj);
-                return true;
+                IDataObject dataObj = null;
+                int hresult = ipicker.InvokeDialog(hwndOwner, out dataObj);
+                if (hresult == HRESULT.S_OK)
+                {
+                    selectedObjects = ProcessSelections(dataObj);
+                    Marshal.ReleaseComObject(dataObj);
+                    return true;
+                }
+                else if (hresult == HRESULT.S_FALSE)
+                {
+                    selectedObjects = null;
+                    return false;
+                }
+                else
+                    throw new COMException("IDsObjectPicker.InvokeDialog failed", hresult);
             }
-            else if (hresult == HRESULT.S_FALSE)
+            finally
             {
-                selectedObjects = null;
                 Marshal.ReleaseComObject(ipicker);
-                return false;
             }
-            else
-                throw new COMException("IDsObjectPicker.InvokeDialog failed", hresult);
-            
         }
 
         #region Private implementation
@@ -565,8 +570,10 @@ namespace Tulpep.ActiveDirectoryObjectPicker
                 // Initialize the Object Picker Dialog Box with our options
                 int hresult = ipicker.Initialize (ref initInfo);
                 if (hresult != HRESULT.S_OK)
+                {
+                    Marshal.ReleaseComObject(ipicker);
                     throw new COMException("IDsObjectPicker.Initialize failed", hresult);
-
+                }
                 return ipicker;
             }
             finally
