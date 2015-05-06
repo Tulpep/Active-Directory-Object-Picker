@@ -5,7 +5,7 @@ Active Directory Object Picker [![Build status](https://ci.appveyor.com/api/proj
 ![Screenshot](Screenshots/ADPickerTester.gif)
 
 
-This project is based on a [Active Directory Common Dialogs .NET](https://adui.codeplex.com/) created in 2004 by Armand du Plessis. It has been updated and make it working with 64 bit Windows Editions.
+This project is based on a [Active Directory Common Dialogs .NET (ADUI)](https://adui.codeplex.com/) created in 2004 by Armand du Plessis. It has been updated and make it working with 64 bit Windows Editions.
 
 ###How to use it
 You can install the lastest version using [NuGet](https://www.nuget.org/packages/Tulpep.ActiveDirectoryObjectPicker/)
