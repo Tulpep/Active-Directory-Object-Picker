@@ -65,11 +65,16 @@ namespace Tulpep.ActiveDirectoryObjectPicker
         /// In a down-level scope, this includes all well-known SIDs.
         /// </para>
         /// </remarks>
-        WellKnownPrincipals = 0x0020, 
+        WellKnownPrincipals = 0x0020,
+
+        /// <summary>
+        /// Includes all service accounts and group managed service accounts. 
+        /// </summary>
+        ServiceAccounts = 0x0040,
 
         /// <summary>
         /// All object types.
         /// </summary>
-        All = 0x003F
+        All = 0x007F
     }
 }

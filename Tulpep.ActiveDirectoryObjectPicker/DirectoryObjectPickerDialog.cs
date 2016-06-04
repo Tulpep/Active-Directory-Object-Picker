@@ -320,6 +320,10 @@ namespace Tulpep.ActiveDirectoryObjectPicker
             {
                 defaultFilter |= DSOP_SCOPE_INIT_INFO_FLAGS.DSOP_SCOPE_FLAG_DEFAULT_FILTER_CONTACTS;
             }
+            if ((defaultTypes & ObjectTypes.ServiceAccounts) == ObjectTypes.ServiceAccounts)
+            {
+                defaultFilter |= DSOP_SCOPE_INIT_INFO_FLAGS.DSOP_SCOPE_FLAG_DEFAULT_FILTER_SERVICE_ACCOUNTS;
+            }
             return defaultFilter;
         }
 
@@ -403,7 +407,11 @@ namespace Tulpep.ActiveDirectoryObjectPicker
             {
                 uplevelFilter |= DSOP_FILTER_FLAGS_FLAGS.DSOP_FILTER_WELL_KNOWN_PRINCIPALS;
             }
-            if( showAdvancedView ) {
+            if ((allowedTypes & ObjectTypes.ServiceAccounts) == ObjectTypes.ServiceAccounts)
+            {
+                uplevelFilter |= DSOP_FILTER_FLAGS_FLAGS.DSOP_FILTER_SERVICE_ACCOUNTS;
+            }
+            if ( showAdvancedView ) {
                 uplevelFilter |= DSOP_FILTER_FLAGS_FLAGS.DSOP_FILTER_INCLUDE_ADVANCED_VIEW;
             }
             return uplevelFilter;
