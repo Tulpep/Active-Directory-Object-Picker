@@ -8,7 +8,7 @@ using System.Reflection;
 [assembly: AssemblyTitle("ActiveDirectoryObjectPicker")]
 [assembly: AssemblyDescription("")]
 [assembly: AssemblyConfiguration("")]
-[assembly: AssemblyCompany("")]
+[assembly: AssemblyCompany("Tulpep")]
 [assembly: AssemblyProduct("ActiveDirectoryObjectPicker")]
 [assembly: AssemblyCopyright("Tulpep")]
 [assembly: AssemblyTrademark("")]
