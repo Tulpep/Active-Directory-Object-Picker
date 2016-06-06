@@ -12,7 +12,7 @@
     <AssemblyKeyContainerName>
     </AssemblyKeyContainerName>
     <AssemblyName>Tulpep.ActiveDirectoryObjectPicker</AssemblyName>
-    <AssemblyOriginatorKeyFile>Tulpep.ActiveDirectory.ObjectPicker.pfx</AssemblyOriginatorKeyFile>
+    <AssemblyOriginatorKeyFile>Tulpep.ActiveDirectoryObjectPicker.snk</AssemblyOriginatorKeyFile>
     <DefaultClientScript>JScript</DefaultClientScript>
     <DefaultHTMLPageLayout>Grid</DefaultHTMLPageLayout>
     <DefaultTargetSchema>IE50</DefaultTargetSchema>
@@ -176,6 +176,7 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="Tulpep.ActiveDirectory.ObjectPicker.pfx" />
+    <None Include="Tulpep.ActiveDirectoryObjectPicker.snk" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>
