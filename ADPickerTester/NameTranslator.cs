@@ -1,6 +1,6 @@
 using System;
 
-namespace Tulpep.ActiveDirectoryObjectPicker
+namespace ADPickerTester
 {
     /// <summary>
     /// Active Directory name translation.

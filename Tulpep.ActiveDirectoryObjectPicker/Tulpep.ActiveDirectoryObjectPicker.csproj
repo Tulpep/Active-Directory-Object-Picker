@@ -139,7 +139,6 @@
       <SubType>Component</SubType>
     </Compile>
     <Compile Include="IntPtrExtensions.cs" />
-    <Compile Include="NameTranslator.cs" />
     <Compile Include="ObjectTypes.cs" />
     <Compile Include="Locations.cs" />
     <Compile Include="PInvoke.cs">
@@ -149,16 +148,6 @@
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="UnmanagedArrayOfStrings.cs" />
-  </ItemGroup>
-  <ItemGroup>
-    <COMReference Include="ActiveDs">
-      <Guid>{97D25DB0-0363-11CF-ABC4-02608C9E7553}</Guid>
-      <VersionMajor>1</VersionMajor>
-      <VersionMinor>0</VersionMinor>
-      <Lcid>0</Lcid>
-      <WrapperTool>tlbimp</WrapperTool>
-      <Isolated>False</Isolated>
-    </COMReference>
   </ItemGroup>
   <ItemGroup>
     <BootstrapperPackage Include="Microsoft.Net.Framework.2.0">
