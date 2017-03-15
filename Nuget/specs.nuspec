@@ -18,5 +18,5 @@
     </metadata>
     <files>
       <file src="..\Tulpep.ActiveDirectoryObjectPicker\bin\Release\Tulpep.ActiveDirectoryObjectPicker.dll" target="lib\net35\Tulpep.ActiveDirectoryObjectPicker.dll" />
-    </files>
+	</files>
 </package>

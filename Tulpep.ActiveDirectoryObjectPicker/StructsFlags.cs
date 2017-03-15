@@ -111,6 +111,18 @@ namespace Tulpep.ActiveDirectoryObjectPicker
 		public IntPtr pvarFetchedAttributes;
 		public uint flScopeType;
 	}
+	/// <summary>
+	/// The DS_SELECTION_LIST structure contains data about the objects the user selected from an object picker dialog box.
+	/// This structure is supplied by the IDataObject interface supplied by the IDsObjectPicker::InvokeDialog method 
+    /// in the CFSTR_DSOP_DS_SELECTION_LIST data format.
+	/// </summary>
+	[StructLayout(LayoutKind.Sequential, CharSet=CharSet.Auto)]
+    internal struct DS_SELECTION_LIST
+	{
+		public uint cItems;
+		public uint cFetchedAttributes;
+		public DS_SELECTION[] aDsSelection;
+	}
 
 	/// <summary>
 	/// Flags that indicate the scope types described by this structure. You can combine multiple scope types 
@@ -248,6 +260,36 @@ namespace Tulpep.ActiveDirectoryObjectPicker
 		TYMED_MFPICT = 32,
 		TYMED_ENHMF = 64,
 		TYMED_NULL = 0
+	}
+
+	/// <summary>
+	/// The DVASPECT enumeration values specify the desired data or view aspect of the object when drawing or getting data.
+	/// </summary>
+    internal enum DVASPECT
+	{
+		DVASPECT_CONTENT = 1,
+		DVASPECT_THUMBNAIL = 2,
+		DVASPECT_ICON = 4,
+		DVASPECT_DOCPRINT = 8
+	}
+
+	/// <summary>
+	/// Directory name types for use with IADsNameTranslate
+	/// </summary>
+	enum ADS_NAME_TYPE_ENUM
+	{
+		ADS_NAME_TYPE_1779 = 1,
+		ADS_NAME_TYPE_CANONICAL = 2,
+		ADS_NAME_TYPE_NT4 = 3,
+		ADS_NAME_TYPE_DISPLAY = 4,
+		ADS_NAME_TYPE_DOMAIN_SIMPLE = 5,
+		ADS_NAME_TYPE_ENTERPRISE_SIMPLE = 6,
+		ADS_NAME_TYPE_GUID = 7,
+		ADS_NAME_TYPE_UNKNOWN = 8,
+		ADS_NAME_TYPE_USER_PRINCIPAL_NAME = 9,
+		ADS_NAME_TYPE_CANONICAL_EX = 10,
+		ADS_NAME_TYPE_SERVICE_PRINCIPAL_NAME = 11,
+		ADS_NAME_TYPE_SID_OR_SID_HISTORY_NAME = 12,
 	}
 }
 // ReSharper restore InconsistentNaming
