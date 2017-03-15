@@ -18,6 +18,5 @@
     </metadata>
     <files>
       <file src="..\Tulpep.ActiveDirectoryObjectPicker\bin\Release\Tulpep.ActiveDirectoryObjectPicker.dll" target="lib\net35\Tulpep.ActiveDirectoryObjectPicker.dll" />
-      <file src="..\Tulpep.ActiveDirectoryObjectPicker\bin\Release\Interop.ActiveDs.dll" target="lib\net35\Interop.ActiveDs.dll" />
-    </files>
+	</files>
 </package>
