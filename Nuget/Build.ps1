@@ -3,7 +3,7 @@ Write-Output "Downloading nuget.exe from nuget.org"
 Invoke-WebRequest "https://nuget.org/nuget.exe" -OutFile $root\Nuget.exe
 
 
-$version = [System.Reflection.Assembly]::LoadFile("$root\Tulpep.ActiveDirectoryObjectPicker\bin\Release\Tulpep.ActiveDirectoryObjectPicker.dll").GetName().Version
+$version = [System.Reflection.Assembly]::LoadFile("$root\Tulpep.ActiveDirectoryObjectPicker\bin\Release\ActiveDirectoryObjectPicker.dll").GetName().Version
 $versionStr = "{0}.{1}.{2}" -f ($version.Major, $version.Minor, $version.Build)
 Write-Host "Setting .nuspec version tag to $versionStr"
 $content = (Get-Content $root\NuGet\specs.nuspec)
