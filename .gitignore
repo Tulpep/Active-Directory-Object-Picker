@@ -99,6 +99,9 @@ publish/
 ## TODO: If you have NuGet Package Restore enabled, uncomment the next line
 packages/
 
+# Visual Studio 2017 project directory
+.vs/
+
 # Windows Azure Build Output
 csx
 *.build.csdef
