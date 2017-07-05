@@ -48,6 +48,7 @@ namespace Tulpep.ActiveDirectoryObjectPicker
 	{
 		private List<string> attributesToFetch;
         private DirectoryObject[] selectedObjects;
+		private string userName, password;
 
 		/// <summary>
         /// Constructor. Sets all properties to their default values.
@@ -193,6 +194,15 @@ namespace Tulpep.ActiveDirectoryObjectPicker
         {
             ResetInner();
         }
+
+		/// <summary>Use this method to override the user credentials, passing new credentials for the account profile to be used.</summary>
+		/// <param name="userName">Name of the user.</param>
+		/// <param name="password">The password for the user.</param>
+		public void SetCredentials(string userName, string password)
+		{
+			this.userName = userName;
+			this.password = password;
+		}
 
         private void ResetInner() // can be called from constructor without a "Virtual member call in constructor" warning
         {
@@ -525,6 +535,13 @@ namespace Tulpep.ActiveDirectoryObjectPicker
             initInfo.cAttributesToFetch = (uint)goingToFetch.Count;
             UnmanagedArrayOfStrings unmanagedAttributesToFetch = new UnmanagedArrayOfStrings(goingToFetch);
             initInfo.apwzAttributeNames = unmanagedAttributesToFetch.ArrayPtr;
+
+			// If the user has defined new credentials, set them now
+			if (!string.IsNullOrEmpty(userName))
+			{
+				var cred = (IDsObjectPickerCredentials)ipicker;
+				cred.SetCredentials(userName, password);
+			}
 			
             try
             {
