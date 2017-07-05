@@ -67,6 +67,10 @@ namespace ADPickerTester
 
 				if (comboPathProvider.SelectedItem is ADsPathsProviders)
 					picker.Providers = (ADsPathsProviders) comboPathProvider.SelectedItem;
+
+				if (txUserName.TextLength > 0)
+					picker.SetCredentials(txUserName.Text, txPassword.Text);
+
                 foreach (string attribute in chklistAttributes.CheckedItems)
                 {
                     string trimmed = attribute.Trim();
