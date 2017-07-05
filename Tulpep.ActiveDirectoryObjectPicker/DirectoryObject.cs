@@ -24,17 +24,17 @@ namespace Tulpep.ActiveDirectoryObjectPicker
         /// from which this object was selected.
         /// </para>
         /// </remarks>
-        public string Path { get; }
+        public string Path { get; private set; }
 
 	    /// <summary>
         /// Gets the name of the schema class for this directory object (objectClass attribute).
         /// </summary>
-		public string SchemaClassName { get; }
+		public string SchemaClassName { get; private set; }
 
 	    /// <summary>
         /// Gets the directory object's relative distinguished name (RDN).
         /// </summary>
-		public string Name { get; }
+		public string Name { get; private set; }
 
 	    /// <summary>
         /// Gets the objects user principal name (userPrincipalName attribute).
@@ -44,11 +44,11 @@ namespace Tulpep.ActiveDirectoryObjectPicker
         /// If the object does not have a userPrincipalName value, this property is an empty string. 
         /// </para>
         /// </remarks>
-		public string Upn { get; }
+		public string Upn { get; private set; }
 
 	    /// <summary>
         /// Gets attributes retrieved by the object picker as it makes the selection.
         /// </summary>
-        public object[] FetchedAttributes { get; }
+        public object[] FetchedAttributes { get; private set; }
     }
 }
