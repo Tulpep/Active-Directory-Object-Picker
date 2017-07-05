@@ -46,8 +46,7 @@ namespace Tulpep.ActiveDirectoryObjectPicker
     /// </remarks>
 	public class DirectoryObjectPickerDialog : CommonDialog
 	{
-		private List<string> attributesToFetch;
-        private DirectoryObject[] selectedObjects;
+		private DirectoryObject[] selectedObjects;
 		private string userName, password;
 
 		/// <summary>
@@ -130,9 +129,9 @@ namespace Tulpep.ActiveDirectoryObjectPicker
         public bool SkipDomainControllerCheck { get; set; }
 
 		/// <summary>
-        /// An list of LDAP attribute names that will be retrieved for picked objects
-        /// </summary>
-        public IList<string> AttributesToFetch => attributesToFetch;
+		/// An list of LDAP attribute names that will be retrieved for picked objects
+		/// </summary>
+		public IList<string> AttributesToFetch { get; set; }
 
 		/// <summary>
         /// Gets the directory object selected in the dialog, or null if no object was selected.
@@ -213,7 +212,7 @@ namespace Tulpep.ActiveDirectoryObjectPicker
             Providers = ADsPathsProviders.Default;
             MultiSelect = false;
             SkipDomainControllerCheck = false;
-            attributesToFetch = new List<string>();
+            AttributesToFetch = new List<string>();
             selectedObjects = null;
             ShowAdvancedView = false;
             TargetComputer = null;
@@ -525,7 +524,7 @@ namespace Tulpep.ActiveDirectoryObjectPicker
             // there's a (seeming?) bug on my Windows XP when fetching the objectClass attribute - the pwzClass field is corrupted...
             // plus, it returns a multivalued array for this attribute. In Windows 2008 R2, however, only last value is returned,
             // just as in pwzClass. So won't actually be retrieving __objectClass__ - will give pwzClass instead
-            List<string> goingToFetch = new List<string>(attributesToFetch);
+            List<string> goingToFetch = new List<string>(AttributesToFetch);
             for (int i = 0; i < goingToFetch.Count; i++)
             {
                 if (goingToFetch[i].Equals("objectClass", StringComparison.OrdinalIgnoreCase))
@@ -654,7 +653,7 @@ namespace Tulpep.ActiveDirectoryObjectPicker
                     fetchedAttributes[i] = l;
                 }
 
-                if (attributesToFetch[i].Equals("objectClass", StringComparison.OrdinalIgnoreCase)) // see comments in Initialize() function
+                if (AttributesToFetch[i].Equals("objectClass", StringComparison.OrdinalIgnoreCase)) // see comments in Initialize() function
                     fetchedAttributes[i] = schemaClassName;
             }
 
