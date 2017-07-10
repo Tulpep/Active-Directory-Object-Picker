@@ -6,19 +6,13 @@ namespace Tulpep.ActiveDirectoryObjectPicker
 	/// </summary>
 	public class DirectoryObject
     {
-        private readonly string adsPath;
-        private readonly string className;
-        private readonly string name;
-        private readonly string upn;
-        private readonly object[] fetchedAttributes;
-
-        public DirectoryObject(string name, string path, string schemaClass, string upn, object[] fetchedAttributes)
+	    public DirectoryObject(string name, string path, string schemaClass, string upn, object[] fetchedAttributes)
         {
-            this.name = name;
-            this.adsPath = path;
-            this.className = schemaClass;
-            this.upn = upn;
-            this.fetchedAttributes = fetchedAttributes;
+            this.Name = name;
+            this.Path = path;
+            this.SchemaClassName = schemaClass;
+            this.Upn = upn;
+            this.FetchedAttributes = fetchedAttributes;
         }
 
         /// <summary>
@@ -30,37 +24,19 @@ namespace Tulpep.ActiveDirectoryObjectPicker
         /// from which this object was selected.
         /// </para>
         /// </remarks>
-        public string Path
-        {
-            get
-            {
-                return adsPath;
-            }
-        }
+        public string Path { get; private set; }
 
-        /// <summary>
+	    /// <summary>
         /// Gets the name of the schema class for this directory object (objectClass attribute).
         /// </summary>
-		public string SchemaClassName
-		{
-			get
-			{
-				return className;
-			}
-		}
+		public string SchemaClassName { get; private set; }
 
-        /// <summary>
+	    /// <summary>
         /// Gets the directory object's relative distinguished name (RDN).
         /// </summary>
-		public string Name
-		{
-			get
-			{
-				return name;
-			}
-		}
+		public string Name { get; private set; }
 
-        /// <summary>
+	    /// <summary>
         /// Gets the objects user principal name (userPrincipalName attribute).
         /// </summary>
         /// <remarks>
@@ -68,23 +44,11 @@ namespace Tulpep.ActiveDirectoryObjectPicker
         /// If the object does not have a userPrincipalName value, this property is an empty string. 
         /// </para>
         /// </remarks>
-		public string Upn
-		{
-			get
-			{
-				return upn;
-			}
-		}
+		public string Upn { get; private set; }
 
-        /// <summary>
+	    /// <summary>
         /// Gets attributes retrieved by the object picker as it makes the selection.
         /// </summary>
-        public object[] FetchedAttributes
-        {
-            get
-            {
-                return fetchedAttributes;
-            }
-        }
-	}
+        public object[] FetchedAttributes { get; private set; }
+    }
 }

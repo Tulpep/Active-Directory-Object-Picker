@@ -26,6 +26,18 @@ namespace Tulpep.ActiveDirectoryObjectPicker
 		int InvokeDialog(IntPtr HWND, out IDataObject lpDataObject);
 	}
 
+	[ComImport, Guid("e2d3ec9b-d041-445a-8f16-4748de8fb1cf"), 
+	 InterfaceType(ComInterfaceType.InterfaceIsIUnknown)]
+	interface IDsObjectPickerCredentials
+	{
+		[PreserveSig]
+		int Initialize(ref DSOP_INIT_INFO pInitInfo);
+		[PreserveSig]
+		int InvokeDialog(IntPtr HWND, out IDataObject lpDataObject);
+		[PreserveSig]
+		int SetCredentials(string userName, string password);
+	}
+
 	/// <summary>
 	/// Interface to enable data transfers
 	/// </summary>

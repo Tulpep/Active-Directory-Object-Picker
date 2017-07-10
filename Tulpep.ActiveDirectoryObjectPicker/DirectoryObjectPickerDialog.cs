@@ -46,19 +46,10 @@ namespace Tulpep.ActiveDirectoryObjectPicker
     /// </remarks>
 	public class DirectoryObjectPickerDialog : CommonDialog
 	{
-        private Locations allowedLocations;
-        private ObjectTypes allowedTypes;
-        private Locations defaultLocations;
-        private ObjectTypes defaultTypes;
-        private ADsPathsProviders providers;
-        private bool multiSelect;
-        private bool skipDomainControllerCheck;
-        private List<string> attributesToFetch;
-        private DirectoryObject[] selectedObjects;
-        private bool showAdvancedView;
-        private string targetComputer;
+		private DirectoryObject[] selectedObjects;
+		private string userName, password;
 
-        /// <summary>
+		/// <summary>
         /// Constructor. Sets all properties to their default values.
         /// </summary>
         /// <remarks>
@@ -91,49 +82,29 @@ namespace Tulpep.ActiveDirectoryObjectPicker
         /// <summary>
         /// Gets or sets the scopes the DirectoryObjectPickerDialog is allowed to search.
         /// </summary>
-        public Locations AllowedLocations
-        {
-            get { return allowedLocations; }
-            set { allowedLocations = value; }
-        }
+        public Locations AllowedLocations { get; set; }
 
-        /// <summary>
+		/// <summary>
         /// Gets or sets the types of objects the DirectoryObjectPickerDialog is allowed to search for.
         /// </summary>
-        public ObjectTypes AllowedObjectTypes
-        {
-            get { return allowedTypes; }
-            set { allowedTypes = value; }
-        }
+        public ObjectTypes AllowedObjectTypes { get; set; }
 
-        /// <summary>
+		/// <summary>
         /// Gets or sets the initially selected scope in the DirectoryObjectPickerDialog.
         /// </summary>
-        public Locations DefaultLocations
-        {
-            get { return defaultLocations; }
-            set { defaultLocations = value; }
-        }
+        public Locations DefaultLocations { get; set; }
 
-        /// <summary>
+		/// <summary>
         /// Gets or sets the initially seleted types of objects in the DirectoryObjectPickerDialog.
         /// </summary>
-        public ObjectTypes DefaultObjectTypes
-        {
-            get { return defaultTypes; }
-            set { defaultTypes = value; }
-        }
+        public ObjectTypes DefaultObjectTypes { get; set; }
 
-        /// <summary>
+		/// <summary>
         /// Gets or sets the providers affecting the ADPath returned in objects.
         /// </summary>
-        public ADsPathsProviders Providers
-        {
-            get { return providers; }
-            set { providers = value; }
-        }
+        public ADsPathsProviders Providers { get; set; }
 
-        /// <summary>
+		/// <summary>
         /// Gets or sets whether the user can select multiple objects.
         /// </summary>
         /// <remarks>
@@ -141,13 +112,9 @@ namespace Tulpep.ActiveDirectoryObjectPicker
         /// If this flag is false, the user can select only one object.
         /// </para>
         /// </remarks>
-        public bool MultiSelect
-        {
-            get { return multiSelect; }
-            set { multiSelect = value; }
-        }
+        public bool MultiSelect { get; set; }
 
-        /// <summary>
+		/// <summary>
         /// Gets or sets the whether to check whether the target is a Domain Controller and hide the "Local Computer" scope
         /// </summary>
         /// <remarks>
@@ -159,21 +126,14 @@ namespace Tulpep.ActiveDirectoryObjectPicker
         /// unless DSOP_SCOPE_TYPE_TARGET_COMPUTER is specified.
         /// </para>
         /// </remarks>
-        public bool SkipDomainControllerCheck
-        {
-            get { return skipDomainControllerCheck; }
-            set { skipDomainControllerCheck = value; }
-        }
+        public bool SkipDomainControllerCheck { get; set; }
 
-        /// <summary>
-        /// An list of LDAP attribute names that will be retrieved for picked objects
-        /// </summary>
-        public IList<string> AttributesToFetch
-        {
-            get { return attributesToFetch; }
-        }
+		/// <summary>
+		/// An list of LDAP attribute names that will be retrieved for picked objects
+		/// </summary>
+		public IList<string> AttributesToFetch { get; set; }
 
-        /// <summary>
+		/// <summary>
         /// Gets the directory object selected in the dialog, or null if no object was selected.
         /// </summary>
         /// <remarks>
@@ -212,13 +172,9 @@ namespace Tulpep.ActiveDirectoryObjectPicker
         /// <summary>
         /// Gets or sets whether objects flagged as show in advanced view only are displayed (up-level).
         /// </summary>
-        public bool ShowAdvancedView
-        {
-            get { return showAdvancedView; }
-            set { showAdvancedView = value; }
-        }
+        public bool ShowAdvancedView { get; set; }
 
-        /// <summary>
+		/// <summary>
         /// Gets or sets the name of the target computer. 
         /// </summary>
         /// <remarks>
@@ -228,13 +184,9 @@ namespace Tulpep.ActiveDirectoryObjectPicker
         /// is the local computer.
         /// </para>
         /// </remarks>
-        public string TargetComputer
-        {
-            get { return targetComputer; }
-            set { targetComputer = value; }
-        }
+        public string TargetComputer { get; set; }
 
-        /// <summary>
+		/// <summary>
         /// Resets all properties to their default values. 
         /// </summary>
         public override void Reset()
@@ -242,19 +194,28 @@ namespace Tulpep.ActiveDirectoryObjectPicker
             ResetInner();
         }
 
+		/// <summary>Use this method to override the user credentials, passing new credentials for the account profile to be used.</summary>
+		/// <param name="userName">Name of the user.</param>
+		/// <param name="password">The password for the user.</param>
+		public void SetCredentials(string userName, string password)
+		{
+			this.userName = userName;
+			this.password = password;
+		}
+
         private void ResetInner() // can be called from constructor without a "Virtual member call in constructor" warning
         {
-            allowedLocations = Locations.All;
-            allowedTypes = ObjectTypes.All;
-            defaultLocations = Locations.None;
-            defaultTypes = ObjectTypes.All;
-            providers = ADsPathsProviders.Default;
-            multiSelect = false;
-            skipDomainControllerCheck = false;
-            attributesToFetch = new List<string>();
+            AllowedLocations = Locations.All;
+            AllowedObjectTypes = ObjectTypes.All;
+            DefaultLocations = Locations.None;
+            DefaultObjectTypes = ObjectTypes.All;
+            Providers = ADsPathsProviders.Default;
+            MultiSelect = false;
+            SkipDomainControllerCheck = false;
+            AttributesToFetch = new List<string>();
             selectedObjects = null;
-            showAdvancedView = false;
-            targetComputer = null;
+            ShowAdvancedView = false;
+            TargetComputer = null;
         }
 
 
@@ -302,25 +263,25 @@ namespace Tulpep.ActiveDirectoryObjectPicker
         private uint GetDefaultFilter()
         {
             uint defaultFilter = 0;
-            if (((defaultTypes & ObjectTypes.Users) == ObjectTypes.Users) ||
-                ((defaultTypes & ObjectTypes.WellKnownPrincipals) == ObjectTypes.WellKnownPrincipals))
+            if (((DefaultObjectTypes & ObjectTypes.Users) == ObjectTypes.Users) ||
+                ((DefaultObjectTypes & ObjectTypes.WellKnownPrincipals) == ObjectTypes.WellKnownPrincipals))
             {
                 defaultFilter |= DSOP_SCOPE_INIT_INFO_FLAGS.DSOP_SCOPE_FLAG_DEFAULT_FILTER_USERS;
             }
-            if (((defaultTypes & ObjectTypes.Groups) == ObjectTypes.Groups) ||
-                ((defaultTypes & ObjectTypes.BuiltInGroups) == ObjectTypes.BuiltInGroups))
+            if (((DefaultObjectTypes & ObjectTypes.Groups) == ObjectTypes.Groups) ||
+                ((DefaultObjectTypes & ObjectTypes.BuiltInGroups) == ObjectTypes.BuiltInGroups))
             {
                 defaultFilter |= DSOP_SCOPE_INIT_INFO_FLAGS.DSOP_SCOPE_FLAG_DEFAULT_FILTER_GROUPS;
             }
-            if ((defaultTypes & ObjectTypes.Computers) == ObjectTypes.Computers)
+            if ((DefaultObjectTypes & ObjectTypes.Computers) == ObjectTypes.Computers)
             {
                 defaultFilter |= DSOP_SCOPE_INIT_INFO_FLAGS.DSOP_SCOPE_FLAG_DEFAULT_FILTER_COMPUTERS;
             }
-            if ((defaultTypes & ObjectTypes.Contacts) == ObjectTypes.Contacts)
+            if ((DefaultObjectTypes & ObjectTypes.Contacts) == ObjectTypes.Contacts)
             {
                 defaultFilter |= DSOP_SCOPE_INIT_INFO_FLAGS.DSOP_SCOPE_FLAG_DEFAULT_FILTER_CONTACTS;
             }
-            if ((defaultTypes & ObjectTypes.ServiceAccounts) == ObjectTypes.ServiceAccounts)
+            if ((DefaultObjectTypes & ObjectTypes.ServiceAccounts) == ObjectTypes.ServiceAccounts)
             {
                 defaultFilter |= DSOP_SCOPE_INIT_INFO_FLAGS.DSOP_SCOPE_FLAG_DEFAULT_FILTER_SERVICE_ACCOUNTS;
             }
@@ -331,27 +292,27 @@ namespace Tulpep.ActiveDirectoryObjectPicker
         private uint GetDownLevelFilter()
         {
             uint downlevelFilter = 0;
-            if ((allowedTypes & ObjectTypes.Users) == ObjectTypes.Users)
+            if ((AllowedObjectTypes & ObjectTypes.Users) == ObjectTypes.Users)
             {
                 downlevelFilter |= DSOP_DOWNLEVEL_FLAGS.DSOP_DOWNLEVEL_FILTER_USERS;
             }
-            if ((allowedTypes & ObjectTypes.Groups) == ObjectTypes.Groups)
+            if ((AllowedObjectTypes & ObjectTypes.Groups) == ObjectTypes.Groups)
             {
                 downlevelFilter |= DSOP_DOWNLEVEL_FLAGS.DSOP_DOWNLEVEL_FILTER_LOCAL_GROUPS |
                                     DSOP_DOWNLEVEL_FLAGS.DSOP_DOWNLEVEL_FILTER_GLOBAL_GROUPS;
             }
-            if ((allowedTypes & ObjectTypes.Computers) == ObjectTypes.Computers)
+            if ((AllowedObjectTypes & ObjectTypes.Computers) == ObjectTypes.Computers)
             {
                 downlevelFilter |=  DSOP_DOWNLEVEL_FLAGS.DSOP_DOWNLEVEL_FILTER_COMPUTERS;
             }
             // Contacts not available in downlevel scopes
             //if ((allowedTypes & ObjectTypes.Contacts) == ObjectTypes.Contacts)
             // Exclude build in groups if not selected
-            if ((allowedTypes & ObjectTypes.BuiltInGroups) == 0)
+            if ((AllowedObjectTypes & ObjectTypes.BuiltInGroups) == 0)
             {
                 downlevelFilter |= DSOP_DOWNLEVEL_FLAGS.DSOP_DOWNLEVEL_FILTER_EXCLUDE_BUILTIN_GROUPS;
             }
-            if ((allowedTypes & ObjectTypes.WellKnownPrincipals) == ObjectTypes.WellKnownPrincipals)
+            if ((AllowedObjectTypes & ObjectTypes.WellKnownPrincipals) == ObjectTypes.WellKnownPrincipals)
             {
                 downlevelFilter |= DSOP_DOWNLEVEL_FLAGS.DSOP_DOWNLEVEL_FILTER_ALL_WELLKNOWN_SIDS;
                 // This includes all the following:
@@ -378,11 +339,11 @@ namespace Tulpep.ActiveDirectoryObjectPicker
         private uint GetUpLevelFilter()
         {
             uint uplevelFilter = 0;
-            if ((allowedTypes & ObjectTypes.Users) == ObjectTypes.Users)
+            if ((AllowedObjectTypes & ObjectTypes.Users) == ObjectTypes.Users)
             {
                 uplevelFilter |= DSOP_FILTER_FLAGS_FLAGS.DSOP_FILTER_USERS;
             }
-            if ((allowedTypes & ObjectTypes.Groups) == ObjectTypes.Groups)
+            if ((AllowedObjectTypes & ObjectTypes.Groups) == ObjectTypes.Groups)
             {
                 uplevelFilter |= DSOP_FILTER_FLAGS_FLAGS.DSOP_FILTER_UNIVERSAL_GROUPS_DL |
                                 DSOP_FILTER_FLAGS_FLAGS.DSOP_FILTER_UNIVERSAL_GROUPS_SE |
@@ -391,27 +352,27 @@ namespace Tulpep.ActiveDirectoryObjectPicker
                                 DSOP_FILTER_FLAGS_FLAGS.DSOP_FILTER_DOMAIN_LOCAL_GROUPS_DL |
                                 DSOP_FILTER_FLAGS_FLAGS.DSOP_FILTER_DOMAIN_LOCAL_GROUPS_SE;
             }
-            if ((allowedTypes & ObjectTypes.Computers) == ObjectTypes.Computers)
+            if ((AllowedObjectTypes & ObjectTypes.Computers) == ObjectTypes.Computers)
             {
                 uplevelFilter |= DSOP_FILTER_FLAGS_FLAGS.DSOP_FILTER_COMPUTERS;
             }
-            if ((allowedTypes & ObjectTypes.Contacts) == ObjectTypes.Contacts)
+            if ((AllowedObjectTypes & ObjectTypes.Contacts) == ObjectTypes.Contacts)
             {
                 uplevelFilter |= DSOP_FILTER_FLAGS_FLAGS.DSOP_FILTER_CONTACTS;
             }
-            if ((allowedTypes & ObjectTypes.BuiltInGroups) == ObjectTypes.BuiltInGroups)
+            if ((AllowedObjectTypes & ObjectTypes.BuiltInGroups) == ObjectTypes.BuiltInGroups)
             {
                 uplevelFilter |= DSOP_FILTER_FLAGS_FLAGS.DSOP_FILTER_BUILTIN_GROUPS;
             }
-            if ((allowedTypes & ObjectTypes.WellKnownPrincipals) == ObjectTypes.WellKnownPrincipals)
+            if ((AllowedObjectTypes & ObjectTypes.WellKnownPrincipals) == ObjectTypes.WellKnownPrincipals)
             {
                 uplevelFilter |= DSOP_FILTER_FLAGS_FLAGS.DSOP_FILTER_WELL_KNOWN_PRINCIPALS;
             }
-            if ((allowedTypes & ObjectTypes.ServiceAccounts) == ObjectTypes.ServiceAccounts)
+            if ((AllowedObjectTypes & ObjectTypes.ServiceAccounts) == ObjectTypes.ServiceAccounts)
             {
                 uplevelFilter |= DSOP_FILTER_FLAGS_FLAGS.DSOP_FILTER_SERVICE_ACCOUNTS;
             }
-            if ( showAdvancedView ) {
+            if ( ShowAdvancedView ) {
                 uplevelFilter |= DSOP_FILTER_FLAGS_FLAGS.DSOP_FILTER_INCLUDE_ADVANCED_VIEW;
             }
             return uplevelFilter;
@@ -459,19 +420,19 @@ namespace Tulpep.ActiveDirectoryObjectPicker
         private uint GetProviderFlags()
         {
             uint scope = 0;
-            if ((providers & ADsPathsProviders.WinNT) == ADsPathsProviders.WinNT)
+            if ((Providers & ADsPathsProviders.WinNT) == ADsPathsProviders.WinNT)
                 scope |= DSOP_SCOPE_INIT_INFO_FLAGS.DSOP_SCOPE_FLAG_WANT_PROVIDER_WINNT;
 
-            if ((providers & ADsPathsProviders.LDAP) == ADsPathsProviders.LDAP)
+            if ((Providers & ADsPathsProviders.LDAP) == ADsPathsProviders.LDAP)
                 scope |= DSOP_SCOPE_INIT_INFO_FLAGS.DSOP_SCOPE_FLAG_WANT_PROVIDER_LDAP;
 
-            if ((providers & ADsPathsProviders.GC) == ADsPathsProviders.GC)
+            if ((Providers & ADsPathsProviders.GC) == ADsPathsProviders.GC)
                 scope |= DSOP_SCOPE_INIT_INFO_FLAGS.DSOP_SCOPE_FLAG_WANT_PROVIDER_GC;
 
-            if ((providers & ADsPathsProviders.SIDPath) == ADsPathsProviders.SIDPath)
+            if ((Providers & ADsPathsProviders.SIDPath) == ADsPathsProviders.SIDPath)
                 scope |= DSOP_SCOPE_INIT_INFO_FLAGS.DSOP_SCOPE_FLAG_WANT_SID_PATH;
 
-            if ((providers & ADsPathsProviders.DownlevelBuiltinPath) == ADsPathsProviders.DownlevelBuiltinPath)
+            if ((Providers & ADsPathsProviders.DownlevelBuiltinPath) == ADsPathsProviders.DownlevelBuiltinPath)
                 scope |= DSOP_SCOPE_INIT_INFO_FLAGS.DSOP_SCOPE_FLAG_WANT_DOWNLEVEL_BUILTIN_PATH;
 
             return scope;
@@ -492,7 +453,7 @@ namespace Tulpep.ActiveDirectoryObjectPicker
             uint providerFlags = GetProviderFlags ();
 
             // Internall, use one scope for the default (starting) locations.
-            uint startingScope = GetScope(defaultLocations);
+            uint startingScope = GetScope(DefaultLocations);
             if (startingScope > 0)
             {
                 DSOP_SCOPE_INIT_INFO startingScopeInfo = new DSOP_SCOPE_INIT_INFO();
@@ -508,7 +469,7 @@ namespace Tulpep.ActiveDirectoryObjectPicker
             }
 
             // And another scope for all other locations (AllowedLocation values not in DefaultLocation)
-            Locations otherLocations = allowedLocations & (~defaultLocations);
+            Locations otherLocations = AllowedLocations & (~DefaultLocations);
             uint otherScope = GetScope(otherLocations);
             if (otherScope > 0)
             {
@@ -543,18 +504,18 @@ namespace Tulpep.ActiveDirectoryObjectPicker
 			// Initialize structure with data to initialize an object picker dialog box. 
 			DSOP_INIT_INFO initInfo = new DSOP_INIT_INFO (); 						
 			initInfo.cbSize = (uint) Marshal.SizeOf (initInfo); 
-            initInfo.pwzTargetComputer = targetComputer;
+            initInfo.pwzTargetComputer = TargetComputer;
             initInfo.cDsScopeInfos = (uint)scopeInitInfo.Length; 
 			initInfo.aDsScopeInfos = refScopeInitInfo;  
 			// Flags that determine the object picker options. 
             uint flOptions = 0; 
-            if (multiSelect)
+            if (MultiSelect)
             {
                 flOptions |= DSOP_INIT_INFO_FLAGS.DSOP_FLAG_MULTISELECT;
             }
             // Only set DSOP_INIT_INFO_FLAGS.DSOP_FLAG_SKIP_TARGET_COMPUTER_DC_CHECK
             // if we know target is not a DC (which then saves initialization time).
-            if (skipDomainControllerCheck)
+            if (SkipDomainControllerCheck)
             {
                 flOptions |= DSOP_INIT_INFO_FLAGS.DSOP_FLAG_SKIP_TARGET_COMPUTER_DC_CHECK;
             }
@@ -563,7 +524,7 @@ namespace Tulpep.ActiveDirectoryObjectPicker
             // there's a (seeming?) bug on my Windows XP when fetching the objectClass attribute - the pwzClass field is corrupted...
             // plus, it returns a multivalued array for this attribute. In Windows 2008 R2, however, only last value is returned,
             // just as in pwzClass. So won't actually be retrieving __objectClass__ - will give pwzClass instead
-            List<string> goingToFetch = new List<string>(attributesToFetch);
+            List<string> goingToFetch = new List<string>(AttributesToFetch);
             for (int i = 0; i < goingToFetch.Count; i++)
             {
                 if (goingToFetch[i].Equals("objectClass", StringComparison.OrdinalIgnoreCase))
@@ -573,6 +534,13 @@ namespace Tulpep.ActiveDirectoryObjectPicker
             initInfo.cAttributesToFetch = (uint)goingToFetch.Count;
             UnmanagedArrayOfStrings unmanagedAttributesToFetch = new UnmanagedArrayOfStrings(goingToFetch);
             initInfo.apwzAttributeNames = unmanagedAttributesToFetch.ArrayPtr;
+
+			// If the user has defined new credentials, set them now
+			if (!string.IsNullOrEmpty(userName))
+			{
+				var cred = (IDsObjectPickerCredentials)ipicker;
+				cred.SetCredentials(userName, password);
+			}
 			
             try
             {
@@ -685,7 +653,7 @@ namespace Tulpep.ActiveDirectoryObjectPicker
                     fetchedAttributes[i] = l;
                 }
 
-                if (attributesToFetch[i].Equals("objectClass", StringComparison.OrdinalIgnoreCase)) // see comments in Initialize() function
+                if (AttributesToFetch[i].Equals("objectClass", StringComparison.OrdinalIgnoreCase)) // see comments in Initialize() function
                     fetchedAttributes[i] = schemaClassName;
             }
 

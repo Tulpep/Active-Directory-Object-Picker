@@ -11,8 +11,7 @@ namespace Tulpep.ActiveDirectoryObjectPicker
     public sealed class UnmanagedArrayOfStrings : IDisposable
     {
         private readonly int _length;
-        private IntPtr _unmanagedArray;
-        private readonly IntPtr[] _unmanagedStrings;
+	    private readonly IntPtr[] _unmanagedStrings;
 
         public UnmanagedArrayOfStrings(List<string> strings)
         {
@@ -21,26 +20,23 @@ namespace Tulpep.ActiveDirectoryObjectPicker
                 _length = strings.Count;
                 _unmanagedStrings = new IntPtr[_length];
                 int neededSize = _length*IntPtr.Size;
-                _unmanagedArray = Marshal.AllocCoTaskMem(neededSize);
+                ArrayPtr = Marshal.AllocCoTaskMem(neededSize);
                 for (int cx = _length - 1; cx >= 0; cx--)
                 {
                     _unmanagedStrings[cx] = Marshal.StringToCoTaskMemUni(strings[cx]);
-                    Marshal.WriteIntPtr(_unmanagedArray, cx*IntPtr.Size, _unmanagedStrings[cx]);
+                    Marshal.WriteIntPtr(ArrayPtr, cx*IntPtr.Size, _unmanagedStrings[cx]);
                 }
             }
         }
 
-        public IntPtr ArrayPtr
-        {
-            get { return _unmanagedArray; }
-        }
+        public IntPtr ArrayPtr { get; private set; }
 
-        public void Dispose()
+	    public void Dispose()
         {
-            if (_unmanagedArray != IntPtr.Zero)
+            if (ArrayPtr != IntPtr.Zero)
             {
-                Marshal.FreeCoTaskMem(_unmanagedArray);
-                _unmanagedArray = IntPtr.Zero;
+                Marshal.FreeCoTaskMem(ArrayPtr);
+                ArrayPtr = IntPtr.Zero;
             }
 
             for (int cx = 0; cx < _length; cx++)
