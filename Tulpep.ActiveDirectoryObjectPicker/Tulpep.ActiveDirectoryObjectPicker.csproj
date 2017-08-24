@@ -137,7 +137,7 @@
     <Compile Include="DirectoryObjectPickerDialog.cs">
       <SubType>Component</SubType>
     </Compile>
-    <Compile Include="ExtensionAttributeFor.NET_2.0.cs" Condition=" $(TargetFrameworkVersion.Replace('v', '')) &lt; 3.5 " />
+    <Compile Include="ExtensionAttributeFor.NET_2.0.cs" Condition="$(TargetFrameworkVersion.Replace('v', '')) &lt; 3.5" />
     <Compile Include="IntPtrExtensions.cs" />
     <Compile Include="NameTranslator.cs" />
     <Compile Include="ObjectTypes.cs" />
