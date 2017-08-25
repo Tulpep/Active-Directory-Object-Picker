@@ -1,6 +1,6 @@
 ﻿$root = (split-path -parent $MyInvocation.MyCommand.Definition) + '\..'
 Write-Output "Downloading nuget.exe from nuget.org"
-Invoke-WebRequest "https://nuget.org/nuget.exe" -OutFile $root\Nuget.exe
+Invoke-WebRequest "https://api.nuget.org/downloads/nuget.exe" -OutFile $root\Nuget.exe
 
 
 $version = [System.Reflection.Assembly]::LoadFile("$root\Tulpep.ActiveDirectoryObjectPicker\bin\Release\ActiveDirectoryObjectPicker.dll").GetName().Version
