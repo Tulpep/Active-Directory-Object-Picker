@@ -20,8 +20,8 @@ dotnet_csproj:
   informational_version: '{version}'
 
 build_script:
-  - cmd: dotnet build -c Release
   - cmd: msbuild -p:Configuration=Release;TargetEarlyVersions=true
+  - cmd: dotnet build -c Release
 
 after_build:
   - ps: .\Nuget\build.ps1
