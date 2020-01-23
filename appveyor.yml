@@ -1,11 +1,6 @@
 # http://www.appveyor.com/docs/appveyor-yml
 
-image:
-  - Visual Studio 2019
-
-build:
-  project: 'Active Directory Object Picker.sln'
-  verbosity: minimal
+image: Visual Studio 2019
 
 # version format
 version: 2.3.{build}
@@ -24,8 +19,8 @@ dotnet_csproj:
   file_version: '{version}'
   informational_version: '{version}'
 
-#Build Relase instead of Debug
-configuration: Release
+build_script:
+  - cmd: dotnet build -c Release
 
 artifacts:
   - path: '**\Tulpep.ActiveDirectoryObjectPicker*.nupkg'
