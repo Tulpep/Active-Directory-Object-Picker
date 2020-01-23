@@ -16,7 +16,7 @@ init:
 # modify version in csproj
 dotnet_csproj:
   patch: true
-  file: '**/*.csproj'
+  file: '**\*.csproj'
   version: '{version}'
   package_version: '{version}'
   assembly_version: '{version}'
@@ -27,7 +27,7 @@ dotnet_csproj:
 configuration: Release
 
 artifacts:
-  - path: '**/Tulpep.ActiveDirectoryObjectPicker*.nupkg'
+  - path: '**\Tulpep.ActiveDirectoryObjectPicker*.nupkg'
     name: Tulpep.ActiveDirectoryObjectPicker.nupkg
 
 #Publish NuGet
