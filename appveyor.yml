@@ -1,5 +1,7 @@
 # http://www.appveyor.com/docs/appveyor-yml
 
+image: Visual Studio 2019
+
 # version format
 version: 2.3.{build}
 
