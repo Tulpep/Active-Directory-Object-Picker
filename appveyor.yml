@@ -20,8 +20,8 @@ dotnet_csproj:
   informational_version: '{version}'
 
 build_script:
-  - cmd: c:\Windows\Microsoft.NET\Framework\v3.5\MSBuild.exe -p:Configuration=Release;TargetEarlyVersions=true
-  - cmd: dotnet build -c Release
+  - cmd: c:\Windows\Microsoft.NET\Framework\v4.0.30319\MSBuild.exe "Active Directory Object Picker.Old.sln" -p:Configuration=Release
+  - cmd: dotnet build "Active Directory Object Picker.sln" -c Release
 
 after_build:
   - ps: .\Nuget\build.ps1

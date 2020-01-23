@@ -20,9 +20,6 @@
     <FileVersion>2.0.7326</FileVersion>
     <DebugType>embedded</DebugType>
   </PropertyGroup>
-  <PropertyGroup Condition="'$(TargetEarlyVersions)' == 'true'">
-    <TargetFrameworks>net20;net35</TargetFrameworks>
-  </PropertyGroup>
   <ItemGroup>
     <None Include="Tulpep.ActiveDirectoryObjectPicker.snk" />
   </ItemGroup>
