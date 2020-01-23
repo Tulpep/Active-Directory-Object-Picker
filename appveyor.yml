@@ -2,6 +2,10 @@
 
 image: Visual Studio 2019
 
+build:
+  project: 'Active Directory Object Picker.sln'
+  verbosity: minimal
+
 # version format
 version: 2.3.{build}
 
@@ -12,7 +16,7 @@ init:
 # modify version in csproj
 dotnet_csproj:
   patch: true
-  file: '**\*.csproj'
+  file: '**/*.csproj'
   version: '{version}'
   package_version: '{version}'
   assembly_version: '{version}'
@@ -23,7 +27,7 @@ dotnet_csproj:
 configuration: Release
 
 artifacts:
-  - path: '**\Tulpep.ActiveDirectoryObjectPicker*.nupkg'
+  - path: '**/Tulpep.ActiveDirectoryObjectPicker*.nupkg'
     name: Tulpep.ActiveDirectoryObjectPicker.nupkg
 
 #Publish NuGet
