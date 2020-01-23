@@ -21,6 +21,10 @@ dotnet_csproj:
 
 build_script:
   - cmd: dotnet build -c Release
+  - cmd: msbuild -p:Configuration=Release;TargetEarlyVersions=true
+
+after_build:
+  - ps: .\Nuget\build.ps1
 
 artifacts:
   - path: '**\Tulpep.ActiveDirectoryObjectPicker*.nupkg'

@@ -3,7 +3,7 @@
     <AssemblyName>ActiveDirectoryObjectPicker</AssemblyName>
     <AssemblyOriginatorKeyFile>Tulpep.ActiveDirectoryObjectPicker.snk</AssemblyOriginatorKeyFile>
     <AssemblyTitle>ActiveDirectoryObjectPicker</AssemblyTitle>
-    <TargetFrameworks>net40;net452;net462;net472;netcoreapp3.1</TargetFrameworks>
+    <TargetFrameworks>net40;net45;net452;net462;net472;net48;netcoreapp3.1</TargetFrameworks>
     <UseWindowsForms>true</UseWindowsForms>
     <SignAssembly>true</SignAssembly>
     <PackageId>Tulpep.ActiveDirectoryObjectPicker</PackageId>
@@ -18,8 +18,10 @@
     <Company>Tulpep</Company>
     <AssemblyVersion>2.0.7326</AssemblyVersion>
     <FileVersion>2.0.7326</FileVersion>
-    <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
     <DebugType>embedded</DebugType>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(TargetEarlyVersions)' == 'true'">
+    <TargetFrameworks>net20;net35</TargetFrameworks>
   </PropertyGroup>
   <ItemGroup>
     <None Include="Tulpep.ActiveDirectoryObjectPicker.snk" />
