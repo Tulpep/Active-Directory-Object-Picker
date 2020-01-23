@@ -7,14 +7,15 @@ version: 2.3.{build}
 init:
   - git config --global core.autocrlf input
 
-
-# Assembly Info
-assembly_info:
+# modify version in csproj
+dotnet_csproj:
   patch: true
-  file: AssemblyInfo.*
-  assembly_version: "{version}"
-  assembly_file_version: "{version}"
-  assembly_informational_version: "{version}"
+  file: '**\*.csproj'
+  version: '{version}'
+  package_version: '{version}'
+  assembly_version: '{version}'
+  file_version: '{version}'
+  informational_version: '{version}'
 
 #Build Relase instead of Debug
 configuration: Release
@@ -22,9 +23,6 @@ configuration: Release
 artifacts:
   - path: '**\Tulpep.ActiveDirectoryObjectPicker*.nupkg'
     name: Tulpep.ActiveDirectoryObjectPicker.nupkg
-
-after_test:
-  - ps: .\Nuget\build.ps1
 
 #Publish NuGet
 deploy:
