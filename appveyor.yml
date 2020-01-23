@@ -20,7 +20,7 @@ dotnet_csproj:
   informational_version: '{version}'
 
 build_script:
-  - cmd: where msbuild
+  - cmd: where /R c:\ msbuild.exe
   - cmd: msbuild -p:Configuration=Release;TargetEarlyVersions=true
   - cmd: dotnet build -c Release
 
