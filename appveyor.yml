@@ -1,7 +1,9 @@
 # http://www.appveyor.com/docs/appveyor-yml
 
+image: Visual Studio 2019
+
 # version format
-version: 2.2.{build}
+version: 2.3.{build}
 
 # Fix line endings in Windows. (runs before repo cloning)
 init:
@@ -9,12 +11,11 @@ init:
 
 
 # Assembly Info
-assembly_info:
+dotnet_csproj:
   patch: true
-  file: AssemblyInfo.*
-  assembly_version: "{version}"
-  assembly_file_version: "{version}"
-  assembly_informational_version: "{version}"
+  file: '**\*.csproj'
+  version: '{version}'
+  version_prefix: '{version}'
 
 #Build Relase instead of Debug
 configuration: Release
@@ -23,14 +24,11 @@ artifacts:
   - path: '**\Tulpep.ActiveDirectoryObjectPicker*.nupkg'
     name: Tulpep.ActiveDirectoryObjectPicker.nupkg
 
-after_test:
-  - ps: .\Nuget\build.ps1
-
 #Publish NuGet
 deploy:
   provider: NuGet
   api_key:
-    secure: nGvHoLNrH4j9xxQF0wMmlLRlVkflplJhlPqn9VMcv1llIQi+PQYVKhpuOcMJqHnh
+    secure: WALEGnw+g6U2njECiTL7xg47/rbkW5V2iwrFNV+XBTRGUdbGnx1CPgVTbBPPiQ93
   artifact: /.*\.nupkg/
   on:
     branch: master
