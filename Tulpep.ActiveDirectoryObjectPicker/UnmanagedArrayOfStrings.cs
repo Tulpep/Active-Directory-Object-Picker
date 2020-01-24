@@ -4,49 +4,53 @@ using System.Runtime.InteropServices;
 
 namespace Tulpep.ActiveDirectoryObjectPicker
 {
-    // based on the packLPArray class.
-    //   original from mailing list post by Beat Bucheli.
-    //   or maybe from http://blogs.technolog.nl/eprogrammer/archive/2005/11/24/402.aspx
-    //   or maybe from somewhere else..
-    public sealed class UnmanagedArrayOfStrings : IDisposable
-    {
-        private readonly int _length;
-	    private readonly IntPtr[] _unmanagedStrings;
+	// based on the packLPArray class. original from mailing list post by Beat Bucheli. or maybe from
+	// http://blogs.technolog.nl/eprogrammer/archive/2005/11/24/402.aspx or maybe from somewhere else..
+	/// <summary>A packed array of strings.</summary>
+	/// <seealso cref="System.IDisposable"/>
+	public sealed class UnmanagedArrayOfStrings : IDisposable
+	{
+		private readonly int _length;
+		private readonly IntPtr[] _unmanagedStrings;
 
-        public UnmanagedArrayOfStrings(List<string> strings)
-        {
-            if (strings != null)
-            {
-                _length = strings.Count;
-                _unmanagedStrings = new IntPtr[_length];
-                int neededSize = _length*IntPtr.Size;
-                ArrayPtr = Marshal.AllocCoTaskMem(neededSize);
-                for (int cx = _length - 1; cx >= 0; cx--)
-                {
-                    _unmanagedStrings[cx] = Marshal.StringToCoTaskMemUni(strings[cx]);
-                    Marshal.WriteIntPtr(ArrayPtr, cx*IntPtr.Size, _unmanagedStrings[cx]);
-                }
-            }
-        }
+		/// <summary>Initializes a new instance of the <see cref="UnmanagedArrayOfStrings"/> class.</summary>
+		/// <param name="strings">The strings to pack.</param>
+		public UnmanagedArrayOfStrings(List<string> strings)
+		{
+			if (strings != null)
+			{
+				_length = strings.Count;
+				_unmanagedStrings = new IntPtr[_length];
+				int neededSize = _length * IntPtr.Size;
+				ArrayPtr = Marshal.AllocCoTaskMem(neededSize);
+				for (int cx = _length - 1; cx >= 0; cx--)
+				{
+					_unmanagedStrings[cx] = Marshal.StringToCoTaskMemUni(strings[cx]);
+					Marshal.WriteIntPtr(ArrayPtr, cx * IntPtr.Size, _unmanagedStrings[cx]);
+				}
+			}
+		}
 
-        public IntPtr ArrayPtr { get; private set; }
+		/// <summary>Gets the pointer to the packed array memory.</summary>
+		public IntPtr ArrayPtr { get; private set; }
 
-	    public void Dispose()
-        {
-            if (ArrayPtr != IntPtr.Zero)
-            {
-                Marshal.FreeCoTaskMem(ArrayPtr);
-                ArrayPtr = IntPtr.Zero;
-            }
+		/// <summary>Releases unmanaged and - optionally - managed resources.</summary>
+		public void Dispose()
+		{
+			if (ArrayPtr != IntPtr.Zero)
+			{
+				Marshal.FreeCoTaskMem(ArrayPtr);
+				ArrayPtr = IntPtr.Zero;
+			}
 
-            for (int cx = 0; cx < _length; cx++)
-            {
-                if (_unmanagedStrings[cx] != IntPtr.Zero)
-                {
-                    Marshal.FreeCoTaskMem(_unmanagedStrings[cx]);
-                    _unmanagedStrings[cx] = IntPtr.Zero;
-                }
-            }
-        }
-    }
+			for (int cx = 0; cx < _length; cx++)
+			{
+				if (_unmanagedStrings[cx] != IntPtr.Zero)
+				{
+					Marshal.FreeCoTaskMem(_unmanagedStrings[cx]);
+					_unmanagedStrings[cx] = IntPtr.Zero;
+				}
+			}
+		}
+	}
 }
