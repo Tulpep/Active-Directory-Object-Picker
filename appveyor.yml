@@ -20,6 +20,10 @@ dotnet_csproj:
 #Build Relase instead of Debug
 configuration: Release
 
+# Make sure all NuGet packages are installed before building.
+before_build:
+  - nuget restore
+
 artifacts:
   - path: '**\Tulpep.ActiveDirectoryObjectPicker*.nupkg'
     name: Tulpep.ActiveDirectoryObjectPicker.nupkg
