@@ -6,6 +6,7 @@
 
 using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Runtime.InteropServices;
 using System.Windows.Forms;
@@ -32,6 +33,7 @@ namespace Tulpep.ActiveDirectoryObjectPicker
 	/// The scope location is also simplified by combining down-level and up-level variations into a single locations flag, e.g. external domains.
 	/// </para>
 	/// </remarks>
+	[DefaultProperty(nameof(DefaultObjectTypes))]
 	public class DirectoryObjectPickerDialog : CommonDialog
 	{
 		private DirectoryObject[] selectedObjects;
@@ -100,27 +102,35 @@ namespace Tulpep.ActiveDirectoryObjectPicker
 		public DirectoryObjectPickerDialog() => ResetInner();
 
 		/// <summary>Gets or sets the scopes the DirectoryObjectPickerDialog is allowed to search.</summary>
+		[Category("Behavior"), DefaultValue(typeof(Locations), "All"), Description("The scopes the dialog is allowed to search.")]
 		public Locations AllowedLocations { get; set; }
 
 		/// <summary>Gets or sets the types of objects the DirectoryObjectPickerDialog is allowed to search for.</summary>
+		[Category("Behavior"), DefaultValue(typeof(ObjectTypes), "All"), Description("The types of objects the dialog is allowed to search for.")]
 		public ObjectTypes AllowedObjectTypes { get; set; }
 
-		/// <summary>An list of LDAP attribute names that will be retrieved for picked objects</summary>
-		public IList<string> AttributesToFetch { get; set; }
+		/// <summary>A list of LDAP attribute names that will be retrieved for picked objects.</summary>
+		[Category("Behavior"), Description("A list of LDAP attribute names that will be retrieved for picked objects.")]
+		[DesignerSerializationVisibility(DesignerSerializationVisibility.Content)]
+		public Collection<string> AttributesToFetch { get; set; }
 
 		/// <summary>Gets or sets the initially selected scope in the DirectoryObjectPickerDialog.</summary>
+		[Category("Behavior"), DefaultValue(typeof(Locations), "None"), Description("The initially selected scope in the dialog.")]
 		public Locations DefaultLocations { get; set; }
 
 		/// <summary>Gets or sets the initially seleted types of objects in the DirectoryObjectPickerDialog.</summary>
+		[Category("Behavior"), DefaultValue(typeof(ObjectTypes), "All"), Description("The initially selected types of objects in the dialog.")]
 		public ObjectTypes DefaultObjectTypes { get; set; }
 
 		/// <summary>Gets or sets whether the user can select multiple objects.</summary>
 		/// <remarks>
 		/// <para>If this flag is false, the user can select only one object.</para>
 		/// </remarks>
+		[Category("Behavior"), DefaultValue(false), Description("Whether the user can select multiple objects.")]
 		public bool MultiSelect { get; set; }
 
 		/// <summary>Gets or sets the providers affecting the ADPath returned in objects.</summary>
+		[Category("Behavior"), DefaultValue(typeof(ADsPathsProviders), "Default"), Description("The providers affecting the ADPath returned in objects.")]
 		public ADsPathsProviders Providers { get; set; }
 
 		/// <summary>Gets the directory object selected in the dialog, or null if no object was selected.</summary>
@@ -130,12 +140,15 @@ namespace Tulpep.ActiveDirectoryObjectPicker
 		/// objects selected.
 		/// </para>
 		/// </remarks>
+		[Browsable(false), DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
 		public DirectoryObject SelectedObject => selectedObjects == null || selectedObjects.Length == 0 ? null : selectedObjects[0];
 
 		/// <summary>Gets an array of the directory objects selected in the dialog.</summary>
+		[Browsable(false), DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
 		public DirectoryObject[] SelectedObjects => selectedObjects == null ? (new DirectoryObject[0]) : (DirectoryObject[])selectedObjects.Clone();
 
 		/// <summary>Gets or sets whether objects flagged as show in advanced view only are displayed (up-level).</summary>
+		[Category("Appearance"), DefaultValue(false), Description("Whether objects flagged as show in advanced view only are displayed (up-level).")]
 		public bool ShowAdvancedView { get; set; }
 
 		/// <summary>Gets or sets the whether to check whether the target is a Domain Controller and hide the "Local Computer" scope</summary>
@@ -147,6 +160,7 @@ namespace Tulpep.ActiveDirectoryObjectPicker
 		/// has no effect unless DSOP_SCOPE_TYPE_TARGET_COMPUTER is specified.
 		/// </para>
 		/// </remarks>
+		[Category("Behavior"), DefaultValue(false), Description("Whether to check whether the target is a Domain Controller and hide the 'Local Computer' scope.")]
 		public bool SkipDomainControllerCheck { get; set; }
 
 		/// <summary>Gets or sets the name of the target computer.</summary>
@@ -156,6 +170,7 @@ namespace Tulpep.ActiveDirectoryObjectPicker
 		/// enterprise. If this value is null or empty, the target computer is the local computer.
 		/// </para>
 		/// </remarks>
+		[Category("Behavior"), DefaultValue(null), Description("The name of the target computer.")]
 		public string TargetComputer { get; set; }
 
 		/// <summary>Resets all properties to their default values.</summary>
@@ -609,6 +624,10 @@ namespace Tulpep.ActiveDirectoryObjectPicker
 			return selections;
 		}
 
+#pragma warning disable IDE0051 // Remove unused private members
+		private void ResetAttributesToFetch() => AttributesToFetch = new Collection<string>();
+#pragma warning restore IDE0051 // Remove unused private members
+
 		private void ResetInner() // can be called from constructor without a "Virtual member call in constructor" warning
 		{
 			AllowedLocations = Locations.All;
@@ -618,10 +637,12 @@ namespace Tulpep.ActiveDirectoryObjectPicker
 			Providers = ADsPathsProviders.Default;
 			MultiSelect = false;
 			SkipDomainControllerCheck = false;
-			AttributesToFetch = new List<string>();
+			ResetAttributesToFetch();
 			selectedObjects = null;
 			ShowAdvancedView = false;
 			TargetComputer = null;
 		}
+
+		private bool ShouldSerializeAttributesToFetch() => AttributesToFetch != null && AttributesToFetch.Count > 0;
 	}
 }
