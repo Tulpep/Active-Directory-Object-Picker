@@ -18,11 +18,11 @@ namespace Tulpep.ActiveDirectoryObjectPicker
 		{
 			if (strings != null)
 			{
-				var _length = strings.Count;
-				_unmanagedStrings = new IntPtr[_length];
-				var neededSize = _length * IntPtr.Size;
+				var length = strings.Count;
+				_unmanagedStrings = new IntPtr[length];
+				var neededSize = length * IntPtr.Size;
 				ArrayPtr = Marshal.AllocCoTaskMem(neededSize);
-				for (var cx = _length - 1; cx >= 0; cx--)
+				for (var cx = length - 1; cx >= 0; cx--)
 				{
 					_unmanagedStrings[cx] = Marshal.StringToCoTaskMemUni(strings[cx]);
 					Marshal.WriteIntPtr(ArrayPtr, cx * IntPtr.Size, _unmanagedStrings[cx]);
