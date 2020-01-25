@@ -192,27 +192,15 @@ namespace Tulpep.ActiveDirectoryObjectPicker
 		public const uint DSOP_DOWNLEVEL_FILTER_LOCAL_SERVICE = 0x80040000;
 		public const uint DSOP_DOWNLEVEL_FILTER_NETWORK = 0x80001000;
 		public const uint DSOP_DOWNLEVEL_FILTER_NETWORK_SERVICE = 0x80080000;
-
-		// added in Windows SDK 6
 		public const uint DSOP_DOWNLEVEL_FILTER_OWNER_RIGHTS = 0x80400000;
-
 		public const uint DSOP_DOWNLEVEL_FILTER_REMOTE_LOGON = 0x80100000;
 		public const uint DSOP_DOWNLEVEL_FILTER_SERVICE = 0x80002000;
-
-		// added in Windows SDK 6
 		public const uint DSOP_DOWNLEVEL_FILTER_SERVICES = 0x80800000;
-
 		public const uint DSOP_DOWNLEVEL_FILTER_SYSTEM = 0x80004000;
 		public const uint DSOP_DOWNLEVEL_FILTER_TERMINAL_SERVER = 0x80010000;
-
-		// added in Windows SDK 7
 		public const uint DSOP_DOWNLEVEL_FILTER_THIS_ORG_CERT = 0x82000000;
-
 		public const uint DSOP_DOWNLEVEL_FILTER_USERS = 0x80000001;
 		public const uint DSOP_DOWNLEVEL_FILTER_WORLD = 0x80000010;
-		// added in Windows SDK 6
-
-		// added in Windows SDK 7 added in Windows SDK 7
 	}
 
 	/// <summary>Filter flags to use for an up-level scope, regardless of whether it is a mixed or native mode domain.</summary>
@@ -231,7 +219,6 @@ namespace Tulpep.ActiveDirectoryObjectPicker
 		public const uint DSOP_FILTER_UNIVERSAL_GROUPS_SE = 0x00000020;
 		public const uint DSOP_FILTER_USERS = 0x00000002;
 		public const uint DSOP_FILTER_WELL_KNOWN_PRINCIPALS = 0x00000008;
-		// added in Windows SDK 7
 	}
 
 	/// <summary>Flags that determine the object picker options.</summary>
@@ -250,6 +237,7 @@ namespace Tulpep.ActiveDirectoryObjectPicker
 		public const uint DSOP_SCOPE_FLAG_DEFAULT_FILTER_COMPUTERS = 0x00000100;
 		public const uint DSOP_SCOPE_FLAG_DEFAULT_FILTER_CONTACTS = 0x00000200;
 		public const uint DSOP_SCOPE_FLAG_DEFAULT_FILTER_GROUPS = 0x00000080;
+		public const uint DSOP_SCOPE_FLAG_DEFAULT_FILTER_PASSWORDSETTINGS_OBJECTS = 0x00000800;
 		public const uint DSOP_SCOPE_FLAG_DEFAULT_FILTER_SERVICE_ACCOUNTS = 0x00000400;
 		public const uint DSOP_SCOPE_FLAG_DEFAULT_FILTER_USERS = 0x00000040;
 		public const uint DSOP_SCOPE_FLAG_STARTING_SCOPE = 0x00000001;
@@ -258,7 +246,6 @@ namespace Tulpep.ActiveDirectoryObjectPicker
 		public const uint DSOP_SCOPE_FLAG_WANT_PROVIDER_LDAP = 0x00000004;
 		public const uint DSOP_SCOPE_FLAG_WANT_PROVIDER_WINNT = 0x00000002;
 		public const uint DSOP_SCOPE_FLAG_WANT_SID_PATH = 0x00000010;
-		// added in Windows SDK 7
 	}
 
 	/// <summary>
@@ -283,9 +270,8 @@ namespace Tulpep.ActiveDirectoryObjectPicker
 	internal class HRESULT
 	{
 		public const int E_NOTIMPL = unchecked((int)0x80004001);
-		public const int S_FALSE = 1;
-		public const int S_OK = 0; // The method succeeded.
-								   // The user cancelled the dialog box. ppdoSelections receives NULL. ?
+		public const int S_FALSE = 1; // The user cancelled the dialog box. ppdoSelections receives NULL. ?
+		public const int S_OK = 0; // The method succeeded.								  
 	}
 }
 

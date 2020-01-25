@@ -11,53 +11,50 @@ namespace ADPickerTester
 	/// <summary>Summary description for Form1.</summary>
 	public partial class MainForm : Form
 	{
-		public MainForm()
-		{
+		public MainForm() =>
 			// Required for Windows Form Designer support
 			InitializeComponent();
-		}
 
 		/// <summary>The main entry point for the application.</summary>
 		[STAThread]
-		private static void Main()
-		{
-			Application.Run(new MainForm());
-		}
+		private static void Main() => Application.Run(new MainForm());
 
 		private void btnInvoke_Click(object sender, EventArgs e)
 		{
 			try
 			{
-				ObjectTypes allowedTypes = ObjectTypes.None;
+				var allowedTypes = ObjectTypes.None;
 				foreach (ObjectTypes value in chklistAllowedTypes.CheckedItems)
 				{
 					allowedTypes |= value;
 				}
-				ObjectTypes defaultTypes = ObjectTypes.None;
+				var defaultTypes = ObjectTypes.None;
 				foreach (ObjectTypes value in chklistDefaultTypes.CheckedItems)
 				{
 					defaultTypes |= value;
 				}
-				Locations allowedLocations = Locations.None;
+				var allowedLocations = Locations.None;
 				foreach (Locations value in chklistAllowedLocations.CheckedItems)
 				{
 					allowedLocations |= value;
 				}
-				Locations defaultLocations = Locations.None;
+				var defaultLocations = Locations.None;
 				foreach (Locations value in chklistDefaultLocations.CheckedItems)
 				{
 					defaultLocations |= value;
 				}
 				// Show dialog
-				DirectoryObjectPickerDialog picker = new DirectoryObjectPickerDialog();
-				picker.AllowedObjectTypes = allowedTypes;
-				picker.DefaultObjectTypes = defaultTypes;
-				picker.AllowedLocations = allowedLocations;
-				picker.DefaultLocations = defaultLocations;
-				picker.MultiSelect = chkMultiSelect.Checked;
-				picker.TargetComputer = txtTargetComputer.Text;
-				picker.SkipDomainControllerCheck = chkSkipDcCheck.Checked;
-				picker.ShowAdvancedView = chkShowAdvanced.Checked;
+				var picker = new DirectoryObjectPickerDialog
+				{
+					AllowedObjectTypes = allowedTypes,
+					DefaultObjectTypes = defaultTypes,
+					AllowedLocations = allowedLocations,
+					DefaultLocations = defaultLocations,
+					MultiSelect = chkMultiSelect.Checked,
+					TargetComputer = txtTargetComputer.Text,
+					SkipDomainControllerCheck = chkSkipDcCheck.Checked,
+					ShowAdvancedView = chkShowAdvanced.Checked
+				};
 
 				if (comboPathProvider.SelectedItem is ADsPathsProviders)
 					picker.Providers = (ADsPathsProviders)comboPathProvider.SelectedItem;
@@ -67,23 +64,23 @@ namespace ADPickerTester
 
 				foreach (string attribute in chklistAttributes.CheckedItems)
 				{
-					string trimmed = attribute.Trim();
+					var trimmed = attribute.Trim();
 					if (trimmed.Length > 0)
 						picker.AttributesToFetch.Add(trimmed);
 				}
-				DialogResult dialogResult = picker.ShowDialog(this);
+				var dialogResult = picker.ShowDialog(this);
 				if (dialogResult == DialogResult.OK)
 				{
-					DirectoryObject[] results = picker.SelectedObjects;
+					var results = picker.SelectedObjects;
 					if (results == null)
 					{
 						txtFeedback.Text = "Results null.";
 						return;
 					}
 
-					StringBuilder sb = new StringBuilder();
+					var sb = new StringBuilder();
 
-					for (int i = 0; i <= results.Length - 1; i++)
+					for (var i = 0; i <= results.Length - 1; i++)
 					{
 						sb.Append(string.Format("Name: \t\t {0}", results[i].Name));
 						sb.Append(Environment.NewLine);
@@ -93,7 +90,7 @@ namespace ADPickerTester
 						sb.Append(Environment.NewLine);
 						sb.Append(string.Format("Schema Class: \t\t {0} ", results[i].SchemaClassName));
 						sb.Append(Environment.NewLine);
-						string downLevelName = "";
+						var downLevelName = "";
 						try
 						{
 							if (!string.IsNullOrEmpty(results[i].Upn))
@@ -107,16 +104,16 @@ namespace ADPickerTester
 						sb.Append(Environment.NewLine);
 						sb.AppendFormat("Fetched {0} attributes", results[i].FetchedAttributes.Length);
 						sb.Append(Environment.NewLine);
-						for (int j = 0; j < results[i].FetchedAttributes.Length; j++)
+						for (var j = 0; j < results[i].FetchedAttributes.Length; j++)
 						{
 							sb.AppendFormat("\t{0}. {1}", j, picker.AttributesToFetch[j]);
 							sb.Append(Environment.NewLine);
 
-							object multivaluedAttribute = results[i].FetchedAttributes[j];
+							var multivaluedAttribute = results[i].FetchedAttributes[j];
 							if (!(multivaluedAttribute is IEnumerable) || multivaluedAttribute is byte[] || multivaluedAttribute is string)
 								multivaluedAttribute = new[] { multivaluedAttribute };
 
-							foreach (object attribute in (IEnumerable)multivaluedAttribute)
+							foreach (var attribute in (IEnumerable)multivaluedAttribute)
 							{
 								sb.Append("\t");
 								if (attribute == null)
@@ -125,7 +122,7 @@ namespace ADPickerTester
 								}
 								else if (attribute is byte[])
 								{
-									byte[] bytes = (byte[])attribute;
+									var bytes = (byte[])attribute;
 									sb.Append(BytesToString(bytes));
 								}
 								else
@@ -158,7 +155,7 @@ namespace ADPickerTester
 		{
 			try
 			{
-				Guid guid = new Guid(bytes);
+				var guid = new Guid(bytes);
 				return guid.ToString("D");
 			}
 			// ReSharper disable once EmptyGeneralCatchClause
@@ -168,7 +165,7 @@ namespace ADPickerTester
 
 			try
 			{
-				SecurityIdentifier sid = new SecurityIdentifier(bytes, 0);
+				var sid = new SecurityIdentifier(bytes, 0);
 				return sid.ToString();
 			}
 			// ReSharper disable once EmptyGeneralCatchClause

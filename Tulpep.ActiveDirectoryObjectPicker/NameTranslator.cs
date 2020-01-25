@@ -21,7 +21,7 @@ namespace Tulpep.ActiveDirectoryObjectPicker
 			if (downLevelNt4Name.Length == 0) throw new ArgumentOutOfRangeException("downLevelNt4Name", "downLevelNt4Name is empty");
 
 			// ReSharper disable once SuspiciousTypeConversion.Global -- COM object and interfaces
-			IADsNameTranslate nameTranslate = (IADsNameTranslate)new NameTranslate();
+			var nameTranslate = (IADsNameTranslate)new NameTranslate();
 			nameTranslate.Set(NameTypeNt4, downLevelNt4Name);
 			return nameTranslate.Get(NameTypeUpn);
 		}
@@ -33,7 +33,7 @@ namespace Tulpep.ActiveDirectoryObjectPicker
 			if (userPrincipalName.Length == 0) throw new ArgumentOutOfRangeException("userPrincipalName", "userPrincipalName is empty");
 
 			// ReSharper disable once SuspiciousTypeConversion.Global -- COM object and interfaces
-			IADsNameTranslate nameTranslate = (IADsNameTranslate)new NameTranslate();
+			var nameTranslate = (IADsNameTranslate)new NameTranslate();
 			nameTranslate.Set(NameTypeUpn, userPrincipalName);
 			return nameTranslate.Get(NameTypeNt4);
 		}
