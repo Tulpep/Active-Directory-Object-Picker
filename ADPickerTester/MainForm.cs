@@ -106,7 +106,8 @@ namespace ADPickerTester
 						sb.Append(Environment.NewLine);
 						for (var j = 0; j < results[i].FetchedAttributes.Length; j++)
 						{
-							sb.AppendFormat("\t{0}. {1}", j, picker.AttributesToFetch[j]);
+							var attributeName = picker.AttributesToFetch[j];
+							sb.AppendFormat("\t{0}. {1}", j, attributeName);
 							sb.Append(Environment.NewLine);
 
 							var multivaluedAttribute = results[i].FetchedAttributes[j];
@@ -123,7 +124,14 @@ namespace ADPickerTester
 								else if (attribute is byte[])
 								{
 									var bytes = (byte[])attribute;
-									sb.Append(BytesToString(bytes));
+									if (attributeName.Equals("objectSid", StringComparison.OrdinalIgnoreCase))
+									{
+										sb.Append(SIDBytesToString(bytes));
+									}
+									else
+									{
+										sb.Append(GuidBytesToString(bytes));
+									}
 								}
 								else
 								{
@@ -153,6 +161,11 @@ namespace ADPickerTester
 
 		private string BytesToString(byte[] bytes)
 		{
+			return "0x" + BitConverter.ToString(bytes).Replace('-', ' ');
+		}
+
+		private string GuidBytesToString(byte[] bytes)
+		{
 			try
 			{
 				var guid = new Guid(bytes);
@@ -163,6 +176,11 @@ namespace ADPickerTester
 			{
 			}
 
+			return BytesToString(bytes);
+		}
+
+		private string SIDBytesToString(byte[] bytes)
+		{
 			try
 			{
 				var sid = new SecurityIdentifier(bytes, 0);
@@ -173,7 +191,7 @@ namespace ADPickerTester
 			{
 			}
 
-			return "0x" + BitConverter.ToString(bytes).Replace('-', ' ');
+			return BytesToString(bytes);
 		}
 
 		private void Form1_Load(object sender, EventArgs e)
