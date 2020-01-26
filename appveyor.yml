@@ -3,7 +3,7 @@
 image: Visual Studio 2019
 
 # version format
-version: 2.3.{build}
+version: 3.0.{build}
 
 # Fix line endings in Windows. (runs before repo cloning)
 init:
