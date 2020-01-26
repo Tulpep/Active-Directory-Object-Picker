@@ -1,5 +1,7 @@
 # http://www.appveyor.com/docs/appveyor-yml
 
+image: Visual Studio 2019
+
 # version format
 version: 2.3.{build}
 
@@ -9,22 +11,22 @@ init:
 
 
 # Assembly Info
-assembly_info:
+dotnet_csproj:
   patch: true
-  file: AssemblyInfo.*
-  assembly_version: "{version}"
-  assembly_file_version: "{version}"
-  assembly_informational_version: "{version}"
+  file: '**\*.csproj'
+  version: '{version}'
+  version_prefix: '{version}'
 
 #Build Relase instead of Debug
 configuration: Release
 
+# Make sure all NuGet packages are installed before building.
+before_build:
+  - nuget restore
+
 artifacts:
   - path: '**\Tulpep.ActiveDirectoryObjectPicker*.nupkg'
     name: Tulpep.ActiveDirectoryObjectPicker.nupkg
-
-after_test:
-  - ps: .\Nuget\build.ps1
 
 #Publish NuGet
 deploy:

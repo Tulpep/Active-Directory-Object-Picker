@@ -1,197 +1,41 @@
-﻿<?xml version="1.0" encoding="utf-8"?>
-<Project DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003" ToolsVersion="12.0">
+﻿<Project Sdk="Microsoft.NET.Sdk.WindowsDesktop">
   <PropertyGroup>
-    <ProjectType>Local</ProjectType>
-    <ProductVersion>9.0.21022</ProductVersion>
-    <SchemaVersion>2.0</SchemaVersion>
-    <ProjectGuid>{AD25BE24-8A42-44E0-9588-3767F572C338}</ProjectGuid>
-    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
-    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ApplicationIcon>
-    </ApplicationIcon>
-    <AssemblyKeyContainerName>
-    </AssemblyKeyContainerName>
     <AssemblyName>ActiveDirectoryObjectPicker</AssemblyName>
     <AssemblyOriginatorKeyFile>Tulpep.ActiveDirectoryObjectPicker.snk</AssemblyOriginatorKeyFile>
-    <DefaultClientScript>JScript</DefaultClientScript>
-    <DefaultHTMLPageLayout>Grid</DefaultHTMLPageLayout>
-    <DefaultTargetSchema>IE50</DefaultTargetSchema>
-    <DelaySign>false</DelaySign>
-    <OutputType>Library</OutputType>
-    <RootNamespace>Tulpep.ActiveDirectoryObjectPicker</RootNamespace>
-    <RunPostBuildEvent>OnBuildSuccess</RunPostBuildEvent>
-    <StartupObject>
-    </StartupObject>
-    <FileUpgradeFlags>
-    </FileUpgradeFlags>
-    <UpgradeBackupLocation>
-    </UpgradeBackupLocation>
-    <OldToolsVersion>3.5</OldToolsVersion>
-    <SccProjectName>
-    </SccProjectName>
-    <SccLocalPath>
-    </SccLocalPath>
-    <SccAuxPath>
-    </SccAuxPath>
-    <SccProvider>
-    </SccProvider>
-    <PublishUrl>http://localhost/CubicOrange.Windows.Forms.ActiveDirectory/</PublishUrl>
-    <Install>true</Install>
-    <InstallFrom>Web</InstallFrom>
-    <UpdateEnabled>true</UpdateEnabled>
-    <UpdateMode>Foreground</UpdateMode>
-    <UpdateInterval>7</UpdateInterval>
-    <UpdateIntervalUnits>Days</UpdateIntervalUnits>
-    <UpdatePeriodically>false</UpdatePeriodically>
-    <UpdateRequired>false</UpdateRequired>
-    <MapFileExtensions>true</MapFileExtensions>
-    <ApplicationRevision>0</ApplicationRevision>
-    <ApplicationVersion>1.0.0.%2a</ApplicationVersion>
-    <IsWebBootstrapper>true</IsWebBootstrapper>
-    <UseApplicationTrust>false</UseApplicationTrust>
-    <BootstrapperEnabled>true</BootstrapperEnabled>
-    <TargetFrameworkVersion>v2.0</TargetFrameworkVersion>
-    <TargetFrameworkProfile />
-  </PropertyGroup>
-  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
-    <OutputPath>bin\$(Configuration)\$(TargetFrameworkVersion)</OutputPath>
-    <AllowUnsafeBlocks>false</AllowUnsafeBlocks>
-    <BaseAddress>285212672</BaseAddress>
-    <CheckForOverflowUnderflow>false</CheckForOverflowUnderflow>
-    <ConfigurationOverrideFile>
-    </ConfigurationOverrideFile>
-    <DefineConstants>DEBUG;TRACE</DefineConstants>
-    <DocumentationFile>
-    </DocumentationFile>
-    <DebugSymbols>true</DebugSymbols>
-    <FileAlignment>4096</FileAlignment>
-    <NoStdLib>false</NoStdLib>
-    <NoWarn>
-    </NoWarn>
-    <Optimize>false</Optimize>
-    <RegisterForComInterop>false</RegisterForComInterop>
-    <RemoveIntegerChecks>false</RemoveIntegerChecks>
-    <TreatWarningsAsErrors>false</TreatWarningsAsErrors>
-    <WarningLevel>4</WarningLevel>
-    <DebugType>full</DebugType>
-    <ErrorReport>prompt</ErrorReport>
-    <Prefer32Bit>false</Prefer32Bit>
-  </PropertyGroup>
-  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
-    <OutputPath>bin\$(Configuration)\$(TargetFrameworkVersion)</OutputPath>
-    <AllowUnsafeBlocks>false</AllowUnsafeBlocks>
-    <BaseAddress>285212672</BaseAddress>
-    <CheckForOverflowUnderflow>false</CheckForOverflowUnderflow>
-    <ConfigurationOverrideFile>
-    </ConfigurationOverrideFile>
-    <DefineConstants>TRACE</DefineConstants>
-    <DocumentationFile>ActiveDirectoryObjectPicker.xml</DocumentationFile>
-    <DebugSymbols>true</DebugSymbols>
-    <FileAlignment>4096</FileAlignment>
-    <NoStdLib>false</NoStdLib>
-    <NoWarn>
-    </NoWarn>
-    <Optimize>true</Optimize>
-    <RegisterForComInterop>false</RegisterForComInterop>
-    <RemoveIntegerChecks>false</RemoveIntegerChecks>
-    <TreatWarningsAsErrors>false</TreatWarningsAsErrors>
-    <WarningLevel>4</WarningLevel>
-    <DebugType>pdbonly</DebugType>
-    <ErrorReport>prompt</ErrorReport>
-    <Prefer32Bit>false</Prefer32Bit>
-  </PropertyGroup>
-  <PropertyGroup>
+    <UseWindowsForms>true</UseWindowsForms>
     <SignAssembly>true</SignAssembly>
+    <PackageId>Tulpep.ActiveDirectoryObjectPicker</PackageId>
+    <PackageVersion>2.0.7326</PackageVersion>
+    <Title>Active Directory Object Picker</Title>
+    <Authors>Armand du Plessis; Tulpep</Authors>
+    <Description>Active Directory Object Picker.</Description>
+    <PackageProjectUrl>https://github.com/Tulpep/Active-Directory-Dialogs</PackageProjectUrl>
+    <PackageLicenseUrl></PackageLicenseUrl>
+    <IncludeSource>true</IncludeSource>
+    <Company>Tulpep</Company>
+    <DebugType>embedded</DebugType>
+    <PackageTags>WPF;Active Directory;Dialog;WinForms;Windows Forms;Picker</PackageTags>
+    <AssemblyTitle>$(AssemblyName)</AssemblyTitle>
+    <TargetFrameworks>net20;net35;net40;net45;net452;net462;net472;net48;netcoreapp3.0;netcoreapp3.1</TargetFrameworks>
+    <GenerateAssemblyProductAttribute>false</GenerateAssemblyProductAttribute>
+    <RootNamespace>Tulpep.ActiveDirectoryObjectPicker</RootNamespace>
+    <DocumentationFile>bin\$(Configuration)\$(TargetFramework)\$(AssemblyName).xml</DocumentationFile>
+    <VersionPrefix>2.3.0</VersionPrefix>
+    <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
+    <IncludeSource>true</IncludeSource>
+    <SymbolPackageFormat>snupkg</SymbolPackageFormat>
+    <PackageLicenseExpression>MS-PL</PackageLicenseExpression>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="System">
-      <Name>System</Name>
-    </Reference>
-    <Reference Include="System.Core">
-      <RequiredTargetFramework>3.5</RequiredTargetFramework>
-    </Reference>
-    <Reference Include="System.Data">
-      <Name>System.Data</Name>
-    </Reference>
-    <Reference Include="System.Drawing">
-      <Name>System.Drawing</Name>
-    </Reference>
-    <Reference Include="System.Windows.Forms">
-      <Name>System.Windows.Forms</Name>
-    </Reference>
-    <Reference Include="System.Xml">
-      <Name>System.XML</Name>
-    </Reference>
+    <PackageReference Include="Microsoft.SourceLink.GitHub" Version="1.0.0" PrivateAssets="All" />
   </ItemGroup>
-  <ItemGroup>
-    <Compile Include="ADsPathsProviders.cs" />
-    <Compile Include="DirectoryObject.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="AssemblyInfo.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="ComInterop.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="DirectoryObjectPickerDialog.cs">
-      <SubType>Component</SubType>
-    </Compile>
-    <Compile Include="ExtensionAttributeFor.NET_2.0.cs" Condition=" $(TargetFrameworkVersion.Replace(&quot;v&quot;,&quot;&quot;)) == 2.0 " />
-    <Compile Include="IntPtrExtensions.cs" />
-    <Compile Include="NameTranslator.cs" />
-    <Compile Include="ObjectTypes.cs" />
-    <Compile Include="Locations.cs" />
-    <Compile Include="PInvoke.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="StructsFlags.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="UnmanagedArrayOfStrings.cs" />
-  </ItemGroup>
-  <ItemGroup>
-    <BootstrapperPackage Include="Microsoft.Net.Framework.2.0">
-      <Visible>False</Visible>
-      <ProductName>.NET Framework 2.0 %28x86%29</ProductName>
-      <Install>true</Install>
-    </BootstrapperPackage>
-    <BootstrapperPackage Include="Microsoft.Net.Framework.3.0">
-      <Visible>False</Visible>
-      <ProductName>.NET Framework 3.0 %28x86%29</ProductName>
-      <Install>false</Install>
-    </BootstrapperPackage>
-    <BootstrapperPackage Include="Microsoft.Net.Framework.3.5">
-      <Visible>False</Visible>
-      <ProductName>.NET Framework 3.5</ProductName>
-      <Install>false</Install>
-    </BootstrapperPackage>
+  <ItemGroup Condition=" $(TargetFramework.StartsWith('net2')) Or $(TargetFramework.StartsWith('net3')) Or $(TargetFramework.StartsWith('net4')) ">
+    <Reference Include="System" />
+    <Reference Include="System.Drawing" />
+    <Reference Include="System.Windows.Forms" />
+    <Reference Include="System.Design" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Tulpep.ActiveDirectoryObjectPicker.snk" />
   </ItemGroup>
-  <ItemGroup>
-    <COMReference Include="ActiveDs">
-      <Guid>{97D25DB0-0363-11CF-ABC4-02608C9E7553}</Guid>
-      <VersionMajor>1</VersionMajor>
-      <VersionMinor>0</VersionMinor>
-      <Lcid>0</Lcid>
-      <WrapperTool>tlbimp</WrapperTool>
-      <Isolated>False</Isolated>
-      <EmbedInteropTypes>True</EmbedInteropTypes>
-    </COMReference>
-  </ItemGroup>
-  <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
-  <PropertyGroup>
-    <PreBuildEvent>
-    </PreBuildEvent>
-    <PostBuildEvent>
-    </PostBuildEvent>
-  </PropertyGroup>
-  <Target Name="AfterBuild">
-    <MSBuild Condition=" $(TargetFrameworkVersion.Replace(&quot;v&quot;,&quot;&quot;)) == 2.0 " Projects="$(MSBuildProjectFile)" Properties="TargetFrameworkVersion=v3.5" RunEachTargetSeparately="true" />
-    <MSBuild Condition=" $(TargetFrameworkVersion.Replace(&quot;v&quot;,&quot;&quot;)) == 3.5 " Projects="$(MSBuildProjectFile)" Properties="TargetFrameworkVersion=v4.0" RunEachTargetSeparately="true" />
-    <MSBuild Condition=" $(TargetFrameworkVersion.Replace(&quot;v&quot;,&quot;&quot;)) == 4.0 " Projects="$(MSBuildProjectFile)" Properties="TargetFrameworkVersion=v4.5" RunEachTargetSeparately="true" />
-    <MSBuild Condition=" $(TargetFrameworkVersion.Replace(&quot;v&quot;,&quot;&quot;)) == 4.5 " Projects="$(MSBuildProjectFile)" Properties="TargetFrameworkVersion=v4.5.2" RunEachTargetSeparately="true" />
-  </Target>
 </Project>

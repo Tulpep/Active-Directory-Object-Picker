@@ -1,11 +1,26 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio 2013
-VisualStudioVersion = 12.0.30723.0
+# Visual Studio Version 16
+VisualStudioVersion = 16.0.29709.97
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ADPickerTester", "ADPickerTester\ADPickerTester.csproj", "{46550771-182F-4A29-9879-AD837D0A9D10}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Tulpep.ActiveDirectoryObjectPicker", "Tulpep.ActiveDirectoryObjectPicker\Tulpep.ActiveDirectoryObjectPicker.csproj", "{AD25BE24-8A42-44E0-9588-3767F572C338}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Tulpep.ActiveDirectoryObjectPicker", "Tulpep.ActiveDirectoryObjectPicker\Tulpep.ActiveDirectoryObjectPicker.csproj", "{AD25BE24-8A42-44E0-9588-3767F572C338}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution files", "Solution files", "{3CFB5347-F5F1-4097-B9F7-0880E1B1CA57}"
+	ProjectSection(SolutionItems) = preProject
+		appveyor.yml = appveyor.yml
+		LICENSE = LICENSE
+		README.md = README.md
+	EndProjectSection
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Screenshots", "Screenshots", "{81FE7AEB-CEBA-425A-8CFA-B1AE18185813}"
+	ProjectSection(SolutionItems) = preProject
+		Screenshots\ADPickerTester.gif = Screenshots\ADPickerTester.gif
+		Screenshots\img01.png = Screenshots\img01.png
+		Screenshots\img02.png = Screenshots\img02.png
+		Screenshots\img03.png = Screenshots\img03.png
+	EndProjectSection
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -24,5 +39,11 @@ Global
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{81FE7AEB-CEBA-425A-8CFA-B1AE18185813} = {3CFB5347-F5F1-4097-B9F7-0880E1B1CA57}
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {EAC3C911-4E73-492D-B434-3F7FDDC11C8F}
 	EndGlobalSection
 EndGlobal
