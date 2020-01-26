@@ -9,7 +9,7 @@ This project is based on a [Active Directory Common Dialogs .NET (ADUI)](https:/
 Now it works in all .Net framework versions, including version 2.0, 3.5, 4.0, 4.5 and .NET Core.
 
 ### How to use it
-You can install the lastest version using [NuGet](https://www.nuget.org/packages/Tulpep.ActiveDirectoryObjectPicker/)
+You can install the latest version using [NuGet](https://www.nuget.org/packages/Tulpep.ActiveDirectoryObjectPicker/)
 ```powershell
 Install-Package Tulpep.ActiveDirectoryObjectPicker
 ```
@@ -18,22 +18,22 @@ And use it this way:
 ```cs
 DirectoryObjectPickerDialog picker = new DirectoryObjectPickerDialog()
 {
-    AllowedObjectTypes = ObjectTypes.Computers,
+    AllowedObjectTypes = ObjectTypes.Users | ObjectTypes.Groups | ObjectTypes.Computers,
     DefaultObjectTypes = ObjectTypes.Computers,
     AllowedLocations = Locations.All,
     DefaultLocations = Locations.JoinedDomain,
     MultiSelect = true,
     ShowAdvancedView = true
 };
-
-
-if (picker.ShowDialog() == DialogResult.OK)
+using (picker)
 {
-    foreach (var sel in picker.SelectedObjects)
+    if (picker.ShowDialog() == DialogResult.OK)
     {
-        Console.WriteLine(sel.Name);
+        foreach (var sel in picker.SelectedObjects)
+        {
+            Console.WriteLine(sel.Name);
+        }
     }
 }
-
 ```
-This repository contains a Visual Studio Test Project with you want a working example.
+This repository contains a Visual Studio Test Project if you want a working example.
