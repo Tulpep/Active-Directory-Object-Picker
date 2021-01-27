@@ -1,7 +1,8 @@
-﻿<Project Sdk="Microsoft.NET.Sdk.WindowsDesktop">
+﻿<Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
     <OutputType>WinExe</OutputType>
     <TargetFrameworks>net472</TargetFrameworks>
+    <ImportWindowsDesktopTargets>true</ImportWindowsDesktopTargets>
     <UseWindowsForms>true</UseWindowsForms>
     <PackageId>ADPickerTester</PackageId>
     <Authors />
