@@ -1,6 +1,6 @@
 # http://www.appveyor.com/docs/appveyor-yml
 
-image: Visual Studio 2019
+image: Visual Studio 2022
 
 # version format
 version: 3.0.{build}
