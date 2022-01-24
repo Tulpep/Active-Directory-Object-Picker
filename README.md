@@ -1,4 +1,5 @@
-Active Directory Object Picker [![Build status](https://ci.appveyor.com/api/projects/status/q5ttquqholl8oomi/branch/master?svg=true)](https://ci.appveyor.com/project/tulpep/active-directory-object-picker/branch/master)
+Active Directory Object Picker [![Build status](https://ci.appveyor.com/api/projects/status/q5ttquqholl8oomi?svg=true)](https://ci.appveyor.com/project/Boardgent/active-directory-object-picker)
+
 ========================
 ### The standard Active Directory object picker dialog for .NET
 
